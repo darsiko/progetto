@@ -23,6 +23,9 @@ create table if not exists shopping_cart(
 	foreign key (idUser) references users(id)
 );
 
+alter table users
+add constraint role check (role = 'admin' or role = 'seller' or role = 'buyer')
+
 insert into users(id,name, email, password, role)
 values(0,'leonardo', '891000@stud.unive.it', 'leonardo', 'admin');
 
