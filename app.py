@@ -3,17 +3,9 @@ import sqlalchemy as sq
 
 app = Flask(__name__)
 
-#username = postgres
-#password = proprio nome
-#nome_db = e_commerce
+connection = 'postgresql://postgres:leonardo@localhost:5432/e_commerce'
 
-connection1 = 'postgresql://postgres:leonardo@localhost:5432/e_commerce'
-connection2 = 'postgresql://postgres:dario@localhost:5432/e_commerce'
-connection3 = 'postgresql://postgres:andrea@localhost:5432/e_commerce'
-
-#per testare usare la propria connessione
-
-engine = sq.create_engine(connection1, echo = True)
+engine = sq.create_engine(connection, echo = True)
 
 @app.route("/")
 def index():
