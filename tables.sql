@@ -17,10 +17,9 @@ create table if not exists products(
 
 create table if not exists shopping_cart(
 	id serial not null primary key,
-	idProduct integer,
-	idUser integer,
-	foreign key (idproduct) references products(id),
-	foreign key (idUser) references users(id)
+	last_edit date,
+	userid integer,
+	foreign key (userid) references users(id)
 );
 
 create table if not exists orders(
@@ -34,18 +33,49 @@ create table if not exists orders(
 	foreign key (idUser) references users(id)
 );
 
+create table if not exists cart_item(
+	id serial not null primary key,
+	name varchar(20),
+	description text
+);
+
+create table if not exists category(
+	id serial not null primary key,
+	name varchar(20),
+	description text
+);
+
+create table if not exists product_category(
+	idproduct integer not null,
+	idcategory integer not null,
+	foreign key (idproduct) references products(id),
+	foreign key (idcategory) references category(id)
+);
+
+create table if not exists reviews(
+	id serial not null primary key,
+	score integer,
+	comment text,
+	data date,
+	idproduct integer,
+	iduser integer,
+	foreign key (idproduct) references products(id),
+	foreign key (iduser) references users(id)
+)
+
 alter table users
 add constraint role check (role = 'admin' or role = 'seller' or role = 'buyer');
 
 alter table orders
 add constraint data check(dataEsecuzione < dataConsegna);
 
-insert into users(name, email, password, role)
-values('leonardo', '891000@stud.unive.it', 'leonardo', 'admin');
+alter table users
+add column address text;
 
-insert into users(name, email, password, role)
-values('dario', '000000@stud.unive.it', 'dario', 'admin');
+alter table products
+add column seller serial;
 
-insert into users(name, email, password, role)
-values('andrea', '111111@stud.unive.it', 'andrea', 'admin');
-
+alter table products
+add constraint fk_id_seller
+foreign key(seller)
+references users(id);
