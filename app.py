@@ -3,11 +3,14 @@ import sqlalchemy as sq
 import re
 
 app = Flask(__name__)
+app.debug = True
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 connection = 'postgresql://postgres:psw123@localhost:5432/postgres'
 
 engine = sq.create_engine(connection, echo=True)
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -32,13 +35,15 @@ def check_email(email):
 def register():
     if request.method == 'POST':
         username = request.form['username']
+        print(username)
         email = request.form['email']
         password = request.form['password']
+        role = request.form.get('select')
         con = engine.connect()
-        con.execute(sq.insert().values(username=username, email=email, password=password))
+        con.execute(sq.text("INSERT INTO users (a,b,c,d) VALUES (username,email,password,role)"))
         con.commit()
         con.close()
-        return redirect('/')
+        return redirect('/login')
     return render_template('register.html')
 
 
