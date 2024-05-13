@@ -61,7 +61,7 @@ create table if not exists reviews(
 	iduser integer,
 	foreign key (idproduct) references products(id),
 	foreign key (iduser) references users(id)
-)
+);
 
 alter table users
 add constraint role check (role = 'admin' or role = 'seller' or role = 'buyer');

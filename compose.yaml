@@ -6,7 +6,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5431:5431"
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d postgres" ]
