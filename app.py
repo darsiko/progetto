@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import *
 from requests import Session
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlalchemy as sq
 import re
-from sqlalchemy import select
 
 app = Flask(__name__)
 app.debug = True
@@ -12,12 +12,15 @@ app.config['SECRET_KEY'] = 'ubersecret'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-class User(UserMixin):
-    def __init__(self, id, user, mail, pwd):
-        self.id = id
-        self.username = user
-        self.email = mail
-        self.password = pwd
+class User(sq.Model):
+    id = sq.Column(sq.Integer, primary_key=True)
+    username = sq.Column(sq.String(80))
+    email = sq.Column(sq.String(80))
+    password = sq.Column(sq.String(80))
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -37,28 +40,23 @@ def index():
         return redirect(url_for('private'))
     return render_template('index.html')
 
-@app.route('/private')
+@app.route('/private', methods=['GET', 'POST'])
 @login_required
 def private():
-    with Session(engine) as session:
-        query = select(User)
-        all_users = session.scalars(query)
-        resp = make_response(render_template("private.html"))
-    return resp
+    return render_template('private.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
         with Session(engine) as session:
             con = engine.connect()
-            stmt = con.execute(sq.text("select * from users where Users.email == request.form['email'] and User.username == request.form['username'] and User.password == request.form['password']"))
-            try:
-                res = session.scalars(stmt).one()
-                login_user(res)
-                return redirect(url_for('private'))
-            except sq.exc.NoResultFound:
-                pass
-    return render_template('login.html')
+            email = request.form['email']
+            username = request.form['username']
+            password = request.form['password']
+            user = User.query.filter_by(username=username, email=email, password=password).first()
+            if username != user.username and password != user.password and email != user.email:
+                return redirect(url_for('login'))
+    return render_template('login.html', username=username, email=email, password=password)
 
 @app.route('/logout')
 @login_required
@@ -82,10 +80,13 @@ def register():
         email = request.form['email']
         password = request.form['password']
         role = request.form.get('select')
-        con = engine.connect()
-        con.execute(sq.text("INSERT INTO users (a,b,c,d) VALUES (username,email,password,role)"))
-        con.commit()
-        con.close()
+        if User.query.filter_by(username=username).first() is not None:
+            flash('Username already exisxt.')
+            return redirect(url_for('login'))
+        user = User(username, email, password, role)
+        sq.session.add(user)
+        sq.session.commit()
+        flash('Registretion successful!')
         return redirect('/login')
     return render_template('register.html')
 
