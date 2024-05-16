@@ -1,23 +1,18 @@
 {% extends 'layout.html' %}
 {% block content %} 
     <div class="container-fluid mx-auto p-10">
-            <form method="POST" action="/private">
+            <form method="POST">
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label"></label>
-                    <input name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['username'] }}" placeholder="username" required>
-
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['name'] }}" placeholder="username" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">{{ request.form['email'] }}</label>
-                    <input name="email"  type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="email" required>
+                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <input name="email"  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="email" required>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">{{ request.form['password'] }}</label>
-                    <input name="password" type="password" class="form-control" id="exampleInputPassword1" value="{{ request.form['password'] }}" placeholder="password" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label"></label>
-                    <input name="repeat-password" type="password" class="form-control" id="exampleInputPassword1" placeholder="repeat password">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input name="password" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['password'] }}" placeholder="password" required>
                 </div>
                 <div class="mb-3 form-check">
                     <p>Che tipologia di utente sei?</p>
@@ -27,8 +22,6 @@
                         <option value="{{ 'seller' }}">seller</option>
                     </select>
                 </div>
-
-
                 <button type="submit" class="btn btn-primary">Invia</button>
             </form>
         </div>

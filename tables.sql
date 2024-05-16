@@ -3,7 +3,7 @@ create table if not exists users(
 	name varchar(20),
 	email varchar(30),
 	password varchar(20),
-	role varchar(10)
+	roles varchar(10)
 );
 
 create table if not exists products(
