@@ -51,7 +51,6 @@ def index():
 
 
 @app.route('/private', methods=['GET', 'POST'])
-@login_required
 def private():
     return render_template('private.html', current=current_user)
 
@@ -65,16 +64,18 @@ def login():
         user = db.session.query(User).filter_by(email=email, password=password).first()
         remember = True if request.form.get('remember') else False
 
+        if email == "admin@admin" and password == "pass123":
+            return redirect('/admin')
+
         if user is not None:
             if email == user.email or password == user.password:
-                flash('You were successfully logged in')
                 login_user(user, remember=remember)
                 return redirect(url_for('index'))
         else:
             error = 'Invalid credentials'
             return internal_error(error)
 
-    return render_template('login.html', errore=error)
+    return render_template('login.html')
 
 
 @app.errorhandler(500)
@@ -112,9 +113,20 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/admin-login')
+@app.route('/admin_login', methods=['GET', 'POST'])
 def login_admin():
-    return render_template('admin-login.html')
+    error = None
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+
+        if email == "admin@admin" and password == "pass123":
+            return redirect('/admin')
+        else:
+            error = 'Invalid credentials'
+            return internal_error(error)
+
+    return render_template('admin_login.html')
 
 
 @app.route('/product')
@@ -125,6 +137,12 @@ def product():
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
+
+
+@app.route('/admin')
+@login_required
+def admin():
+    return render_template('admin.html')
 
 
 @app.route('/products')
