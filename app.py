@@ -62,15 +62,17 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = db.session.query(User).filter_by(email=email, password=password).first()
+
         remember = True if request.form.get('remember') else False
 
-        if email == "admin@admin" and password == "pass123":
-            return redirect('/admin')
-
         if user is not None:
-            if email == user.email or password == user.password:
-                login_user(user, remember=remember)
-                return redirect(url_for('index'))
+            if email == user.email and password == user.password:
+                if user.roles == 'admin' and password == 'pass123' and email == "admin@admin":
+                    login_user(user, remember=remember)
+                    return redirect(url_for('admin'))
+                else:
+                    login_user(user, remember=remember)
+                    return redirect(url_for('index'))
         else:
             error = 'Invalid credentials'
             return internal_error(error)
@@ -113,22 +115,6 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/admin_login', methods=['GET', 'POST'])
-def login_admin():
-    error = None
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
-
-        if email == "admin@admin" and password == "pass123":
-            return redirect('/admin')
-        else:
-            error = 'Invalid credentials'
-            return internal_error(error)
-
-    return render_template('admin_login.html')
-
-
 @app.route('/product')
 def product():
     return render_template('product.html')
@@ -142,9 +128,24 @@ def cart():
 @app.route('/admin')
 @login_required
 def admin():
-    return render_template('admin.html')
+    return render_template('backend/index.html')
 
 
 @app.route('/products')
 def products():
     return render_template('products.html')
+@app.route('/items_selled')
+def items_selled():
+    return render_template('backend/items_selled.html')
+
+
+@app.route('/inventory')
+@login_required
+def inventory():
+    return render_template('backend/products.html')
+
+
+@app.route('/users')
+def users():
+    user = User.query.all()
+    return render_template('backend/users.html', user=user)
