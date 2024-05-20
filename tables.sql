@@ -2,8 +2,9 @@ create table if not exists users(
 	id serial not null primary key,
 	name varchar(20),
 	email varchar(30),
-	password varchar(20),
-	roles varchar(10)
+	password text,
+    address varchar(20)
+	role varchar(10)
 );
 
 create table if not exists products(
@@ -63,14 +64,13 @@ create table if not exists reviews(
 	foreign key (iduser) references users(id)
 );
 
+CREATE SEQUENCE esempio_id_seq;
+
 alter table users
 add constraint role check (role = 'admin' or role = 'seller' or role = 'buyer');
 
 alter table orders
 add constraint data check(dataEsecuzione < dataConsegna);
-
-alter table users
-add column address text;
 
 alter table products
 add column seller serial;

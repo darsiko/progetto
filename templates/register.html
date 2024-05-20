@@ -14,6 +14,10 @@
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input name="password" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['password'] }}" placeholder="password" required>
                 </div>
+                <div class="mb-3">
+                    <label for="exampleInputAddress1" class="form-label">Address</label>
+                    <input name="address" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['address'] }}" placeholder="address" required>
+                </div>
                 <div class="mb-3 form-check">
                     <p>Che tipologia di utente sei?</p>
                     <select name="select" class="form-select" aria-label="Default select example">

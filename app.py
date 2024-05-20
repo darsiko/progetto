@@ -1,8 +1,6 @@
-import route
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import *
 from flask_sqlalchemy import SQLAlchemy
-from requests import auth
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager
 import re
@@ -12,7 +10,7 @@ app.debug = True
 
 app.config['SECRET_KEY'] = 'ubersecret'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:psw123@localhost:5432/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:leonardo@localhost:5432/e_commerce'
 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -30,8 +28,9 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
     email = db.Column(db.String(80))
-    password = db.Column(db.String(80))
-    roles = db.Column(db.String(80))
+    password = db.Column(db.String(1000))
+    address = db.Column(db.String(80))
+    role = db.Column(db.String(80))
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
@@ -66,8 +65,9 @@ def login():
         remember = True if request.form.get('remember') else False
 
         if user is not None:
-            if email == user.email and password == user.password:
-                if user.roles == 'admin' and password == 'pass123' and email == "admin@admin":
+            print(users)
+            if email == user.email and user.check_password(password):
+                if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
                     login_user(user, remember=remember)
                     return redirect(url_for('admin'))
                 else:
@@ -107,8 +107,10 @@ def register():
         name = request.form['name']
         email_register = request.form['email']
         password = request.form['password']
-        roles = request.form.get('select')
-        users = User(name=name, email=email_register, password=password, roles=roles)
+        address = request.form['address']
+        role = request.form.get('select')
+        users = User(name=name, email=email_register, password=password, address=address, role=role)
+        users.set_password(password)
         db.session.add(users)
         db.session.commit()
         return redirect('/login')
