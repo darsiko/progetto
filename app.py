@@ -60,24 +60,26 @@ def login():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
-        user = db.session.query(User).filter_by(email=email, password=password).first()
-
+        user = db.session.query(User).filter_by(email=email).first()
         remember = True if request.form.get('remember') else False
 
         if user is not None:
-            print(users)
-            if email == user.email and user.check_password(password):
+            if user.check_password(password):
                 if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
                     login_user(user, remember=remember)
                     return redirect(url_for('admin'))
                 else:
                     login_user(user, remember=remember)
                     return redirect(url_for('index'))
+            else:
+                error = 'Invalid credentials'
+                return internal_error(error)
         else:
-            error = 'Invalid credentials'
+            error = 'User not found'
             return internal_error(error)
 
     return render_template('login.html')
+
 
 
 @app.errorhandler(500)
@@ -109,12 +111,13 @@ def register():
         password = request.form['password']
         address = request.form['address']
         role = request.form.get('select')
-        users = User(name=name, email=email_register, password=password, address=address, role=role)
+        users = User(name=name, email=email_register, address=address, role=role)
         users.set_password(password)
         db.session.add(users)
         db.session.commit()
         return redirect('/login')
     return render_template('register.html')
+
 
 
 @app.route('/product')
