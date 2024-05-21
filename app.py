@@ -31,6 +31,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(80))
     email = db.Column(db.String(80))
     password = db.Column(db.String(80))
+    address = db.Column(db.String(80))
     role = db.Column(db.String(80))
 
     def set_password(self, password):
@@ -61,21 +62,25 @@ def login():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
-        user = db.session.query(User).filter_by(email=email, password=password).first()
+        user = db.session.query(User).filter_by(email=email).first()
         remember = True if request.form.get('remember') else False
 
-        if email == "admin@admin" and password == "pass123":
-            return redirect('/admin')
-
         if user is not None:
-            if email == user.email or password == user.password:
+            if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
+                login_user(user, remember=remember)
+                return redirect(url_for('admin'))
+            if user.check_password(password):
                 login_user(user, remember=remember)
                 return redirect(url_for('index'))
+            else:
+                error = 'Invalid credentials'
+                return internal_error(error)
         else:
-            error = 'Invalid credentials'
+            error = 'User not found'
             return internal_error(error)
 
     return render_template('login.html')
+
 
 
 @app.errorhandler(500)
@@ -105,8 +110,10 @@ def register():
         name = request.form['name']
         email_register = request.form['email']
         password = request.form['password']
+        address = request.form['address']
         role = request.form.get('select')
         users = User(name=name, email=email_register, password=password, role=role)
+        users.set_password(password)
         db.session.add(users)
         db.session.commit()
         return redirect('/login')
