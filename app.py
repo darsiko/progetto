@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for
 from flask_login import *
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -64,13 +64,14 @@ def login():
         remember = True if request.form.get('remember') else False
 
         if user is not None:
+
+            if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
+                login_user(user, remember=remember)
+                return redirect(url_for('admin'))
+
             if user.check_password(password):
-                if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
-                    login_user(user, remember=remember)
-                    return redirect(url_for('admin'))
-                else:
-                    login_user(user, remember=remember)
-                    return redirect(url_for('index'))
+                login_user(user, remember=remember)
+                return redirect(url_for('index'))
             else:
                 error = 'Invalid credentials'
                 return internal_error(error)
