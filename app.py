@@ -27,6 +27,7 @@ def create_app():
     from products.products import products_bp
     from cart.cart import cart_bp
     from private.private import private_bp
+    from logout.logout import logout_bp
 
     app.register_blueprint(register_bp)
     app.register_blueprint(login_bp)
@@ -35,13 +36,12 @@ def create_app():
     app.register_blueprint(products_bp)
     app.register_blueprint(cart_bp)
     app.register_blueprint(private_bp)
+    app.register_blueprint(logout_bp)
 
     @app.route("/site-map")
     def site_map():
         links = []
         for rule in app.url_map.iter_rules():
-            # Filter out rules we can't navigate to in a browser
-            # and rules that require parameters
             if "GET" in rule.methods:
                 try:
                     url = url_for(rule.endpoint, **(rule.defaults or {}))
