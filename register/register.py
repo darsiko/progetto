@@ -18,4 +18,4 @@ def register():
         db.session.add(users)
         db.session.commit()
         return redirect('/login')
-    return render_template('register.html')
+    return render_template('register/register.html')

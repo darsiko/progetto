@@ -28,10 +28,10 @@ def login():
             error = 'User not found'
             return internal_error(error)
 
-    return render_template('login.html')
+    return render_template('login/login.html')
 
 
 @login_bp.errorhandler(500)
 @login_bp.errorhandler(400)
 def internal_error(error):
-    return render_template('errore.html', error=error)
+    return render_template('login/errore.html', error=error)

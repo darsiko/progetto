@@ -25,12 +25,16 @@ def create_app():
     from login_admin.login_Admin import login_admin_bp
     from home.home import home_bp
     from products.products import products_bp
+    from cart.cart import cart_bp
+    from private.private import private_bp
 
     app.register_blueprint(register_bp)
     app.register_blueprint(login_bp)
     app.register_blueprint(login_admin_bp)
     app.register_blueprint(home_bp)
     app.register_blueprint(products_bp)
+    app.register_blueprint(cart_bp)
+    app.register_blueprint(private_bp)
 
     @app.route("/site-map")
     def site_map():
@@ -51,5 +55,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    print(app.url_map)
     app.run(debug=True)
