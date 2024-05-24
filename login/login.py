@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for, Blueprint
 from flask_login import login_user
 from models import db, User
 
-login_bp = Blueprint('login_bp', __name__, template_folder='templates', static_folder='static', static_url_path='/assets')
+login_bp = Blueprint('login_bp', __name__, template_folder='templates', static_folder='static',
+                     static_url_path='/assets')
 
 
 @login_bp.route('/login', methods=['GET', 'POST'])
@@ -17,10 +18,10 @@ def login():
         if user is not None:
             if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
                 login_user(user, remember=remember)
-                return redirect(url_for('admin'))
+                return redirect(url_for('privare_bp.private'))
             if user.check_password(password):
                 login_user(user, remember=remember)
-                return redirect(url_for('index'))
+                return redirect(url_for('home_bp.index'))
             else:
                 error = 'Invalid credentials'
                 return internal_error(error)
