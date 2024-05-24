@@ -12,3 +12,5 @@ def list():
 @products_bp.route('/product')
 def view(product_id):
     return render_template('products/product.html')
+
+

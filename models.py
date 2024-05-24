@@ -58,6 +58,7 @@ class ShoppingCart(db.Model, UserMixin):
     user = db.relationship('User', backref=db.backref('shopping_cart', lazy=True))
 
 
+
 class CartItem(db.Model, UserMixin):
     __tablename__ = 'cart_item'
     id = db.Column(db.Integer, primary_key=True)
