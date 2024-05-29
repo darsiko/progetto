@@ -1,11 +1,19 @@
-from flask_login import UserMixin
+from flask import Flask
+from flask_bcrypt import Bcrypt
+from flask_login import UserMixin, LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db, login_manager
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'ubersecret'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:leonardo@localhost:5432/e_commerce'
 
-@login_manager.user_loader
-def load_user(user):
-    return User.get(user)
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.login_message_category = 'info'
 
 
 class User(db.Model, UserMixin):

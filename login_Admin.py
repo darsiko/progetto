@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, Blueprint
-from login.login import internal_error
+from login import internal_error
 
 login_admin_bp = Blueprint('login_admin_bp', __name__, template_folder='templates', static_folder='static',
                            static_url_path='/assets')

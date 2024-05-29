@@ -1,58 +1,28 @@
-from flask import Flask, url_for
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
+from register import register_bp
+from login import login_bp
+from login_Admin import login_admin_bp
+from home import home_bp
+from products import products_bp
+from cart import cart_bp
+from private import private_bp
+from logout import logout_bp
 
-db = SQLAlchemy()
-bcrypt = Bcrypt()
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-login_manager.login_message_category = 'info'
+from models import login_manager, User, app
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'ubersecret'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5433/e_commerce'
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
-    db.init_app(app)
-    bcrypt.init_app(app)
-    login_manager.init_app(app)
 
-    from register.register import register_bp
-    from login.login import login_bp
-    from login_admin.login_Admin import login_admin_bp
-    from home.home import home_bp
-    from products.products import products_bp
-    from cart.cart import cart_bp
-    from private.private import private_bp
-    from logout.logout import logout_bp
-
-    app.register_blueprint(register_bp)
-    app.register_blueprint(login_bp)
-    app.register_blueprint(login_admin_bp)
-    app.register_blueprint(home_bp)
-    app.register_blueprint(products_bp)
-    app.register_blueprint(cart_bp)
-    app.register_blueprint(private_bp)
-    app.register_blueprint(logout_bp)
-
-    @app.route("/site-map")
-    def site_map():
-        links = []
-        for rule in app.url_map.iter_rules():
-            if "GET" in rule.methods:
-                try:
-                    url = url_for(rule.endpoint, **(rule.defaults or {}))
-                    links.append((url, rule.endpoint))
-                except:
-                    pass
-        return links
-
-    return app
-
+app.register_blueprint(register_bp)
+app.register_blueprint(login_bp)
+app.register_blueprint(login_admin_bp)
+app.register_blueprint(home_bp)
+app.register_blueprint(products_bp)
+app.register_blueprint(cart_bp)
+app.register_blueprint(private_bp)
+app.register_blueprint(logout_bp)
 
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
