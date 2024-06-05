@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, url_for, Blueprint
-from flask_login import login_user
+from flask_login import login_user, current_user
 from models import db, User
 
 login_bp = Blueprint('login_bp', __name__, template_folder='templates', static_folder='static',
@@ -29,10 +29,10 @@ def login():
             error = 'User not found'
             return internal_error(error)
 
-    return render_template('login/login.html')
+    return render_template('login.html', current_user=current_user)
 
 
 @login_bp.errorhandler(500)
 @login_bp.errorhandler(400)
 def internal_error(error):
-    return render_template('login/errore.html', error=error)
+    return render_template('errore.html', error=error)

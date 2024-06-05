@@ -4,4 +4,4 @@ private_bp = Blueprint('private_bp', __name__, template_folder='templates', stat
 
 @private_bp.route('/private')
 def private():
-    return render_template('private/private.html')
+    return render_template('private.html')

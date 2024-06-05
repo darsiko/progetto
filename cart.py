@@ -4,4 +4,4 @@ cart_bp = Blueprint('cart_bp', __name__, template_folder='templates', static_fol
 
 @cart_bp.route('/cart')
 def cart():
-    return render_template('cart/cart.html')
+    return render_template('cart.html')

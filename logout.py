@@ -4,4 +4,4 @@ logout_bp = Blueprint('logout_bp', __name__, template_folder='templates', static
 
 @logout_bp.route('/')
 def logout():
-    return render_template('logout/index.html')
+    return render_template('index.html')

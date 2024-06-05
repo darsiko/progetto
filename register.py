@@ -1,4 +1,6 @@
 from flask import render_template, request, redirect, Blueprint
+from flask_login import current_user
+
 from models import db, User
 
 register_bp = Blueprint('register_bp', __name__, template_folder='templates', static_folder='static',
@@ -18,4 +20,4 @@ def register():
         db.session.add(users)
         db.session.commit()
         return redirect('/login')
-    return render_template('register/register.html')
+    return render_template('register.html',current_user=current_user)
