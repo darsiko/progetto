@@ -2,12 +2,15 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ubersecret'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:leonardo@localhost:5432/e_commerce'
+conn = 'postgresql://postgres:postgres@localhost:5433/e_commerce'
+app.config['SQLALCHEMY_DATABASE_URI'] = conn
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -16,6 +19,9 @@ login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
 login_manager.init_app(app)
 db.init_app(app)
+engine = create_engine(conn)
+Session = sessionmaker(bind=engine)
+session = Session()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'

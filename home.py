@@ -5,4 +5,6 @@ home_bp = Blueprint('home_bp', __name__, template_folder='templates', static_fol
 
 @home_bp.route('/')
 def index():
-    return render_template('index.html', current_user=current_user)
+    if current_user:
+        return render_template('index.html')
+    return render_template('layout.html', current_user=current_user)

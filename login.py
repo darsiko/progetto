@@ -1,9 +1,22 @@
-from flask import render_template, request, redirect, url_for, Blueprint
+from functools import wraps
+from flask import render_template, request, redirect, url_for, Blueprint, Response, session
 from flask_login import login_user, current_user
 from models import db, User
 
 login_bp = Blueprint('login_bp', __name__, template_folder='templates', static_folder='static',
                      static_url_path='/assets')
+
+
+def require_api_token(func):
+    @wraps(func)
+    def check_token(*args, **kwargs):
+        # Check to see if it's in their session
+        if 'api_session_token' not in session:
+            # If it isn't return our access denied message (you can also return a redirect or render_template)
+            return Response("Access denied")
+        # Otherwise just send them where they wanted to go
+        return func(*args, **kwargs)
+    return check_token
 
 
 @login_bp.route('/login', methods=['GET', 'POST'])
@@ -18,7 +31,7 @@ def login():
         if user is not None:
             if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
                 login_user(user, remember=remember)
-                return redirect(url_for('privare_bp.private'))
+                return redirect(url_for('admin_bp.admin'))
             if user.check_password(password):
                 login_user(user, remember=remember)
                 return redirect(url_for('home_bp.index'))
