@@ -1,32 +1,20 @@
-{% extends 'layout.html' %}
-{% block content %} 
-    <div class="container-fluid mx-auto p-10">
-            <form method="POST">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <input name="name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['name'] }}" placeholder="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input name="email"  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input name="password" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['password'] }}" placeholder="password" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputAddress1" class="form-label">Address</label>
-                    <input name="address" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['address'] }}" placeholder="address" required>
-                </div>
-                <div class="mb-3 form-check">
-                    <p>Che tipologia di utente sei?</p>
-                    <select name="select" class="form-select" aria-label="Default select example">
-                        <option selected>Tipologia</option>
-                        <option value="{{ 'buyer' }}">buyer</option>
-                        <option value="{{ 'seller' }}">seller</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Invia</button>
-            </form>
-        </div>
-    {% endblock %}    
+{% extends "index.html" %}
+{% block content %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(size=32) }}<br>
+        {{ form.email.label }}<br>
+        {{ form.email(size=32) }}<br>
+        {{ form.password.label }}<br>
+        {{ form.password(size=32) }}<br>
+        {{ form.address.label }}<br>
+        {{ form.address(size=32) }}<br>
+        {{ form.role.label }}<br>
+        {{ form.role() }}<br>
+        {{ form.submit() }}
+    </p>
+    </form>
+    <p>Already have an account? <a href="{{ url_for('login_blueprint.login') }}">Login</a></p>
+{% endblock content %}

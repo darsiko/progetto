@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ubersecret'
@@ -15,13 +16,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = conn
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
-login_manager.init_app(app)
 db.init_app(app)
 engine = create_engine(conn)
 Session = sessionmaker(bind=engine)
 session = Session()
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -32,6 +34,13 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(80))
     role = db.Column(db.String(80))
 
+    def __init__(self, name, email, password, address, role):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.address = address
+        self.role = role
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -40,6 +49,14 @@ class User(db.Model, UserMixin):
 
     def get(self):
         return self
+
+    def email_already_used(email):
+        u = User.query.filter_by(email=email).first()
+        return u is not None
+
+    def name_already_used(name):
+        u = User.query.filter_by(name=name).first()
+        return u is not None
 
 
 class Product(db.Model, UserMixin):
@@ -73,12 +90,13 @@ class ShoppingCart(db.Model, UserMixin):
     user = db.relationship('User', backref=db.backref('shopping_cart', lazy=True))
 
 
-
 class CartItem(db.Model, UserMixin):
     __tablename__ = 'cart_item'
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    cart_id = db.Column(db.Integer, db.ForeignKey('shopping_cart.id'), nullable=False)
     product = db.relationship('Product', backref=db.backref('cart_item', lazy=True))
+    cart = db.relationship('ShoppingCart', backref=db.backref('cart_item', lazy=True))
     amount = db.Column(db.Integer)
 
 

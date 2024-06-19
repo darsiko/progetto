@@ -1,24 +1,14 @@
-
-    <!-- Example Code -->
-    {% extends 'layout.html' %}
-    {% block content %} 
-    <div class="container-fluid mx-auto p-10">
-            <form method = "POST">
-               <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input name="email"  type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ request.form['email'] }}" placeholder="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input name="password" type="text" class="form-control" id="exampleInputPassword1" value="{{ request.form['password'] }}" placeholder="password" required>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="{{ request.form['remember'] }}" id="flexCheckDefault">
-                  <label class="form-check-label" for="flexCheckDefault">
-                   Ricordati
-                  </label>
-                </div>
-                <button type="submit" class="btn btn-primary" >Invia</button>
-            </form>
-        </div>
-    {% endblock %}     
+{% extends "index.html" %}
+{% block content %}
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {{ form.remember }} {{ form.remember.label }}<br>
+            {{ form.submit() }}
+        </p>
+    </form>
+{% endblock content %}

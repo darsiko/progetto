@@ -1,51 +1,32 @@
-from functools import wraps
-from flask import render_template, request, redirect, url_for, Blueprint, Response, session
-from flask_login import login_user, current_user
-from models import db, User
+from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import login_user, login_required, logout_user, current_user
+from form import LoginForm
+from models import User
 
-login_bp = Blueprint('login_bp', __name__, template_folder='templates', static_folder='static',
-                     static_url_path='/assets')
-
-
-def require_api_token(func):
-    @wraps(func)
-    def check_token(*args, **kwargs):
-        # Check to see if it's in their session
-        if 'api_session_token' not in session:
-            # If it isn't return our access denied message (you can also return a redirect or render_template)
-            return Response("Access denied")
-        # Otherwise just send them where they wanted to go
-        return func(*args, **kwargs)
-    return check_token
+login_blueprint = Blueprint('login_blueprint', __name__, template_folder='templates', static_folder='static')
 
 
-@login_bp.route('/login', methods=['GET', 'POST'])
+@login_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
-    if request.method == "POST":
-        email = request.form['email']
-        password = request.form['password']
-        user = db.session.query(User).filter_by(email=email).first()
-        remember = True if request.form.get('remember') else False
-
-        if user is not None:
-            if user.role == 'admin' and password == 'pass123' and email == "admin@admin":
-                login_user(user, remember=remember)
-                return redirect(url_for('admin_bp.admin'))
-            if user.check_password(password):
-                login_user(user, remember=remember)
-                return redirect(url_for('home_bp.index'))
-            else:
-                error = 'Invalid credentials'
-                return internal_error(error)
-        else:
-            error = 'User not found'
-            return internal_error(error)
-
-    return render_template('login.html', current_user=current_user)
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            return redirect(request.form.get('next') or url_for('index_blueprint.index'))
+        flash('Invalid email or password', 'danger')
+        print("Invalid email or password', 'danger")
+    return render_template('login.html', form=form)
 
 
-@login_bp.errorhandler(500)
-@login_bp.errorhandler(400)
+@login_blueprint.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index_blueprint.index'))
+
+
+@login_blueprint.errorhandler(500)
+@login_blueprint.errorhandler(400)
 def internal_error(error):
-    return render_template('errore.html', error=error)
+    return render_template('error.html', error=error)

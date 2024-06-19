@@ -1,22 +1,18 @@
-from flask import render_template, request, redirect, Blueprint
-from flask_login import current_user
-from models import db, User
+from flask import Blueprint, render_template, request, flash, redirect, url_for
+from models import User, db
+from form import RegisterForm
 
-register_bp = Blueprint('register_bp', __name__, template_folder='templates', static_folder='static',
-                        static_url_path='/assets')
+register_blueprint = Blueprint('register_blueprint', __name__, template_folder='templates', static_folder='static')
 
 
-@register_bp.route('/register', methods=['GET', 'POST'])
+@register_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        name = request.form['name']
-        email_register = request.form['email']
-        password = request.form['password']
-        address = request.form['address']
-        role = request.form.get('select')
-        users = User(name=name, email=email_register, password=password, address=address, role=role)
-        users.set_password(password)
-        db.session.add(users)
+    form = RegisterForm()
+    if form.validate_on_submit():
+        new_user = User(name=form.name.data, email=form.email.data, password=form.password.data, address=form.address.data, role=form.role.data)
+        new_user.set_password(form.password.data)
+        db.session.add(new_user)
         db.session.commit()
-        return redirect('/login')
-    return render_template('register.html', current_user=current_user)
+        flash('Registration successful! You can now log in.')
+        return redirect(url_for('login_blueprint.login'))
+    return render_template('register.html', form=form)

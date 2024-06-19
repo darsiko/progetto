@@ -1,83 +1,15 @@
-{% extends 'layout.html' %}
+{% extends "index.html" %}
 {% block content %}
-<style>
-.form{
-
-    position: relative;
-}
-
-.form .fa-search{
-
-    position: absolute;
-    top:20px;
-    left: 20px;
-    color: #9ca3af;
-
-}
-
-.form span{
-
-        position: absolute;
-    right: 17px;
-    top: 13px;
-    padding: 2px;
-    border-left: 1px solid #d1d5db;
-
-}
-
-.left-pan{
-    padding-left: 7px;
-}
-
-.left-pan i{
-
-   padding-left: 10px;
-}
-
-.form-input{
-
-    height: 55px;
-    text-indent: 33px;
-    border-radius: 10px;
-}
-
-.form-input:focus{
-
-    box-shadow: none;
-    border:none;
-}
-
-*,
-*::before,
-::after {
-  box-sizing: border-box;
-}
-</style>
-    <section class="py-5">
-    <div class="container">
-
-            <div class="row height d-flex justify-content-center align-items-center">
-
-              <div class="col-md-6">
-
-                <div class="form">
-                  <i class="fa fa-search"></i>
-                  <input type="text" class="form-control form-input" placeholder="Search anything...">
-                  <span class="left-pan"><i class="fa fa-microphone"></i></span>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-            <div class="container px-4 px-lg-4 mt-5">
-                <div class="row gx-4 row-cols-2 row-cols-md-4 justify-content-center">
-                <form method="get">
-                    {% for product in products %}
-                        <div>DIO BOIA</div>
-                    {% endfor %}
-                </form>
-                </div>
-            </div>
-        </section>
-    {% endblock %}
+    <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    {% for product in products %}
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">{{ product.name }}</li>
+            <li class="list-group-item">{{ product.description }}</li>
+            <li class="list-group-item">{{ product.amount}}</li>
+            <li class="list-group-item">{{ product.price }}</li>
+        </ul>
+    {% endfor %}
+{% endblock content %}

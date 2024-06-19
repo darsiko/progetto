@@ -1,15 +1,11 @@
 from flask import Blueprint, render_template
 
-products_bp = Blueprint('products_bp', __name__, template_folder='templates', static_folder='static')
+from models import Product
+
+products_blueprint = Blueprint('products_blueprint', __name__, template_folder="templates", static_folder="static")
 
 
-@products_bp.route('/products')
-def list():
-    return render_template('products.html')
-
-
-@products_bp.route('/product')
-def view(product_id):
-    return render_template('product.html')
-
-
+@products_blueprint.route("/products")
+def products():
+    items = Product.query.all()
+    return render_template("products.html", products=items)
