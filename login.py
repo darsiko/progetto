@@ -15,7 +15,6 @@ def login():
             login_user(user, remember=form.remember.data)
             return redirect(request.form.get('next') or url_for('index_blueprint.index'))
         flash('Invalid email or password', 'danger')
-        print("Invalid email or password', 'danger")
     return render_template('login.html', form=form)
 
 

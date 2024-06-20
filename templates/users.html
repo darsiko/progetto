@@ -1,1 +1,26 @@
 {% extends 'index.html' %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Address</th>
+                <th scope="col">Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.role }}</td>
+                    <td> <button type="button" class="btn btn-primary">Modifica</button> <button type="button" class="btn btn-danger">Elimina</button> </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

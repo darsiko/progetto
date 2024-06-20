@@ -4,12 +4,29 @@
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
-    {% for product in products %}
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item">{{ product.name }}</li>
-            <li class="list-group-item">{{ product.description }}</li>
-            <li class="list-group-item">{{ product.amount}}</li>
-            <li class="list-group-item">{{ product.price }}</li>
-        </ul>
-    {% endfor %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <th scope="row">{{ product.id }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.amount }}</td>
+                    <td>{{ product.price }}</td>
+                    {% if current_user.role == 'admin' %}
+                        <td> <button type="button" class="btn btn-primary">Modifica</button> <button type="button" class="btn btn-danger">Elimina</button> </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}
