@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user
 from werkzeug.exceptions import Unauthorized
-from models import User
+from models import User, db
 
 users_blueprint = Blueprint('users_blueprint', __name__, template_folder='templates', static_folder='static')
 
@@ -23,10 +23,13 @@ def modify():
         raise Unauthorized()
 
 
-@users_blueprint.route(methods=['GET', 'POST'])
-def delete(id):
+@users_blueprint.route('/<int:idx>/delete', methods=['POST'])
+def delete(idx):
     if current_user.role == 'admin':
-        User.query.filter_by(id=id).delete()
-        return None
+        user = User.query.get_or_404(idx)
+        db.session.delete(user)
+        db.session.commit()
+        return redirect(url_for('users_blueprint.users'))
     else:
         raise Unauthorized()
+

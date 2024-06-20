@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS orders (
 create table if not exists carts(
     id serial not null primary key,
     user_id integer,
-    last_modify date,
+    date date,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

@@ -86,7 +86,7 @@ class ShoppingCart(db.Model, UserMixin):
     __tablename__ = 'shopping_cart'
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    userid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('shopping_cart', lazy=True))
 
 
@@ -117,8 +117,8 @@ class ProductCategory(db.Model, UserMixin):
 class Rewies(db.Model, UserMixin):
     __tablename__ = 'rewies'
     id = db.Column(db.Integer, primary_key=True)
-    points = db.Column(db.Integer)
-    text = db.Column(db.String(80))
+    score = db.Column(db.Integer)
+    rewie = db.Column(db.String(80))
     date = db.Column(db.Date)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     product = db.relationship('Product', backref=db.backref('rewies', lazy=True))
