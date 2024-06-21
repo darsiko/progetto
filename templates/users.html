@@ -20,12 +20,14 @@
                     <td>{{ user.address }}</td>
                     <td>{{ user.role }}</td>
                     <td>
-                        <form method="POST">
-                            <button type="button" class="btn btn-primary">Modify</button>
-                        </form>
-                        <form action="{{ url_for("users_blueprint.delete", idx=user.id) }}" method="POST">
-                            <button type="submit" class="btn btn-danger" >Delete</button>
-                        </form>
+                        <div class="btn-group" role="group">
+                            <form method="POST">
+                                <button type="button" class="btn btn-primary">Modify</button>
+                            </form>
+                            <form action="{{ url_for("users_blueprint.delete", idx=user.id) }}" method="POST">
+                                <button type="submit" class="btn btn-danger" >Delete</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

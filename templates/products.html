@@ -12,6 +12,7 @@
                 <th scope="col">Description</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Price</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +24,16 @@
                     <td>{{ product.amount }}</td>
                     <td>{{ product.price }}</td>
                     {% if current_user.role == 'admin' %}
-                        <td> <button type="button" class="btn btn-primary">Modifica</button> <button type="button" class="btn btn-danger">Elimina</button> </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form method="POST">
+                                    <button type="button" class="btn btn-primary">Modify</button>
+                                </form>
+                                <form action="{{ url_for("products_blueprint.delete", idx=product.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger" >Delete</button>
+                                </form>
+                            </div>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}

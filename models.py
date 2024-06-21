@@ -92,9 +92,8 @@ class ShoppingCart(db.Model, UserMixin):
 
 class CartItem(db.Model, UserMixin):
     __tablename__ = 'cart_item'
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    cart_id = db.Column(db.Integer, db.ForeignKey('shopping_cart.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False, primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey('shopping_cart.id'), nullable=False, primary_key=True)
     product = db.relationship('Product', backref=db.backref('cart_item', lazy=True))
     cart = db.relationship('ShoppingCart', backref=db.backref('cart_item', lazy=True))
     amount = db.Column(db.Integer)

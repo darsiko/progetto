@@ -1,14 +1,23 @@
 {% extends "index.html" %}
+
 {% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Login</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.email.label }}<br>
-            {{ form.email(size=32) }}<br>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {{ form.remember }} {{ form.remember.label }}<br>
-            {{ form.submit() }}
-        </p>
+        <div class="mb-3">
+            <label for="email" class="form-label">{{ form.email.label }}</label>
+            {{ form.email(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">{{ form.password.label }}</label>
+            {{ form.password(class="form-control", size=32) }}
+        </div>
+        <div class="form-check mb-3">
+            {{ form.remember(class="form-check-input") }}
+            <label for="remember" class="form-check-label">{{ form.remember.label }}</label>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
     </form>
+</div>
 {% endblock content %}
