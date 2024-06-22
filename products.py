@@ -15,7 +15,7 @@ def products():
 
 @products_blueprint.route('/<int:idx>/delete', methods=['POST'])
 def delete(idx):
-    if current_user.role == 'admin':
+    if current_user.role == 'admin' or current_user.role == 'seller':
         product = Product.query.get_or_404(idx)
         db.session.delete(product)
         db.session.commit()
@@ -35,7 +35,7 @@ def own_products(idx):
 
 @products_blueprint.route('/own_products/add', methods=['GET', 'POST'])
 def add_product():
-    if current_user.role == 'seller' or 'admin':
+    if current_user.role == 'seller':
         form = AddProductForm()
         if form.validate_on_submit():
             new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.name.description, amount=form.amount.data, price=form.price.data)

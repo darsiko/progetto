@@ -12,7 +12,12 @@
                 <th scope="col">Description</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Price</th>
-                <th scope="col">Action</th>
+                {% if current_user.is_authenticated %}
+                    <th scope="col">Action</th>
+                {% endif %}
+                {% if current_user.role == 'admin' %}
+                    <th scope="col">Action</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -23,6 +28,18 @@
                     <td>{{ product.description }}</td>
                     <td>{{ product.amount }}</td>
                     <td>{{ product.price }}</td>
+                    {% if current_user.is_authenticated %}
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form method="POST">
+                                    <button type="button" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                                <form method="POST">
+                                    <button type="submit" class="btn btn-primary" >Add review</button>
+                                </form>
+                            </div>
+                        </td>
+                    {% endif %}
                     {% if current_user.role == 'admin' %}
                         <td>
                             <div class="btn-group" role="group">

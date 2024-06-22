@@ -23,6 +23,16 @@
                         <td>{{ product.description }}</td>
                         <td>{{ product.amount }}</td>
                         <td>{{ product.price }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <form method="POST">
+                                    <button type="button" class="btn btn-primary">Modify</button>
+                                </form>
+                                <form action="{{ url_for("products_blueprint.delete", idx=product.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger" >Delete</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
