@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash
 from flask_login import login_required, current_user
-from sqlalchemy.orm import joinedload
-from models import Cart, CartItem, Product, db
+from models import Cart, CartItem, Product
 
 cart_blueprint = Blueprint('cart_blueprint', __name__, template_folder='templates', static_folder='static')
 
@@ -9,7 +8,7 @@ cart_blueprint = Blueprint('cart_blueprint', __name__, template_folder='template
 @cart_blueprint.route('/cart')
 @login_required
 def cart():
-
     return render_template('cart.html')
+
 
 
