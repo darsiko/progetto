@@ -1,57 +1,67 @@
 {% extends "index.html" %}
 {% block content %}
-    <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Price</th>
-                {% if current_user.is_authenticated %}
-                    <th scope="col">Action</th>
-                {% endif %}
-                {% if current_user.role == 'admin' %}
-                    <th scope="col">Action</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in products %}
-                <tr>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td>{{ product.amount }}</td>
-                    <td>{{ product.price }}</td>
-                    {% if current_user.is_authenticated %}
-                        <td>
-                            <div class="btn-group" role="group">
-                                <form action="{{ url_for('products_blueprint.add_to_cart', idx=product.id) }}" method="POST">
-                                    <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
-                                </form>
-                                <form method="POST">
-                                    <button type="submit" class="btn btn-primary">Add review</button>
-                                </form>
-                            </div>
-                        </td>
-                    {% endif %}
-                    {% if current_user.role == 'admin' %}
-                        <td>
-                            <div class="btn-group" role="group">
-                                <form method="POST">
-                                    <button type="button" class="btn btn-primary me-2">Modify</button>
-                                </form>
-                                <form action="{{ url_for("products_blueprint.delete", idx=product.id) }}" method="POST">
-                                    <button type="submit" class="btn btn-danger" >Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form class="d-flex justify-content-center mb-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Price</th>
+                            {% if current_user.is_authenticated %}
+                                <th scope="col">Action</th>
+                            {% endif %}
+                            {% if current_user.role == 'admin' %}
+                                <th scope="col">Admin Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.description }}</td>
+                                <td>{{ product.amount }}</td>
+                                <td>{{ product.price }}</td>
+                                {% if current_user.is_authenticated %}
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <form action="{{ url_for('products_blueprint.add_to_cart', idx=product.id) }}" method="POST">
+                                                <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
+                                            </form>
+                                            <form action="{{ url_for('review_blueprint.add_review', idx=product.id) }}" method="POST">
+                                                <button type="submit" class="btn btn-primary">Add review</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                                {% if current_user.role == 'admin' %}
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <form method="POST">
+                                                <button type="button" class="btn btn-primary me-2">Modify</button>
+                                            </form>
+                                            <form action="{{ url_for("products_blueprint.delete", idx=product.id) }}" method="POST">
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

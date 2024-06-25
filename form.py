@@ -34,7 +34,16 @@ class RegisterForm(FlaskForm):
 
 class AddProductForm(FlaskForm):
     name = StringField('name', validators=[DataRequired(), Length(min=2, max=150)])
-    description = StringField('description',  validators=[DataRequired(), Length(min=10, max=1000)])
+    description = StringField('description', validators=[DataRequired(), Length(min=10, max=1000)])
     amount = IntegerField('amount', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired(), NumberRange(min=0)], places=2)
     submit = SubmitField('Add')
+
+
+class ModifyUser(FlaskForm):
+    name = StringField('name', validators=[DataRequired(), Length(min=2, max=150)])
+    email = StringField('email', validators=[DataRequired(), Email()])
+    address = StringField('address', validators=[DataRequired(), Length(min=2, max=150)])
+    role = SelectField('role', choices=[('buyer', 'buyer'), ('seller', 'seller'), ('admin', 'admin')],
+                       validators=[DataRequired()])
+    submit = SubmitField('Modify')

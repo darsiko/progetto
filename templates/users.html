@@ -1,36 +1,48 @@
 {% extends 'index.html' %}
 {% block content %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Address</th>
-                <th scope="col">Role</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-                <tr>
-                    <th scope="row">{{ user.id }}</th>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.address }}</td>
-                    <td>{{ user.role }}</td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <form method="POST">
-                                <button type="button" class="btn btn-primary me-2">Modify</button>
-                            </form>
-                            <form action="{{ url_for("users_blueprint.delete", idx=user.id) }}" method="POST">
-                                <button type="submit" class="btn btn-danger" >Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form class="d-flex justify-content-center mb-3" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.address }}</td>
+                                <td>{{ user.role }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <form action="{{ url_for('users_blueprint.modify', idx=user.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-primary me-2">Modify</button>
+                                        </form>
+                                        <form action="{{ url_for("users_blueprint.delete", idx=user.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-danger" >Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

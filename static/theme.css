@@ -1,0 +1,48 @@
+/* Stili per il tema chiaro (default) */
+body {
+    background-color: white;
+    color: black;
+}
+
+.table {
+    background-color: white;
+    color: black;
+}
+
+/* Stili per il tema scuro */
+body.dark-theme {
+    background-color: #121212;
+    color: white;
+}
+
+body.dark-theme .table {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+body.dark-theme .btn {
+    background-color: #333;
+    color: white;
+    border: none;
+}
+
+body.dark-theme .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+body.dark-theme .btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+
+body.dark-theme .btn-outline-success:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+body.dark-theme .form-control {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+}

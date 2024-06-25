@@ -1,4 +1,26 @@
-{% extends index.html %}
+{% extends 'index.html' %}
 {% block content %}
-
+<div class="container mt-5">
+    <h2 class="mb-4">Modify</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="name" class="form-label">{{ form.name.label }}</label>
+            {{ form.name(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">{{ form.email.label }}</label>
+            {{ form.email(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">{{ form.address.label }}</label>
+            {{ form.address(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">{{ form.role.label }}</label>
+            {{ form.role(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+</div>
 {% endblock content %}

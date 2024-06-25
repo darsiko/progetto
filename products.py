@@ -39,7 +39,8 @@ def add_product():
     if current_user.role == 'seller':
         form = AddProductForm()
         if form.validate_on_submit():
-            new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.description.data, amount=form.amount.data, price=form.price.data)
+            new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.description.data,
+                                  amount=form.amount.data, price=form.price.data)
             db.session.add(new_product)
             db.session.commit()
             return redirect(url_for("products_blueprint.own_products", idx=current_user.id))
@@ -52,3 +53,7 @@ def add_product():
 def add_to_cart(idx):
     return redirect(url_for('products_blueprint.products'))
 
+
+@products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])
+def modify_product(idx):
+    return render_template('modify_product.html')

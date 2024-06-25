@@ -9,6 +9,7 @@ from cart import cart_blueprint
 from orders import orders_blueprint
 from private_area import private_area_blueprint
 from users import users_blueprint
+from review import review_blueprint
 
 
 @login_manager.user_loader
@@ -30,6 +31,7 @@ app.register_blueprint(cart_blueprint)
 app.register_blueprint(orders_blueprint)
 app.register_blueprint(private_area_blueprint)
 app.register_blueprint(users_blueprint)
+app.register_blueprint(review_blueprint)
 
 if __name__ == "__main__":
     app.run(debug=True)
