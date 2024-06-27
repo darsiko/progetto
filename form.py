@@ -58,6 +58,6 @@ class ModifyProduct(FlaskForm):
 
 
 class ReviewForm(FlaskForm):
-    score = IntegerField('score', validators=[DataRequired()])
+    score = IntegerField('score', validators=[DataRequired(), NumberRange(min=1, max=5, message="Score must be between 1 and 5")])
     text = StringField('description', validators=[DataRequired(), Length(min=10, max=1000)])
     submit = SubmitField('Submit')

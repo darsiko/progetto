@@ -4,9 +4,29 @@
         <button type="submit" class="btn btn-primary me-2">Add Review</button>
     </form>
     <h1>{{ product.name }}</h1>
-    <ul class="list-group">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Score</th>
+                <th scope="col">Review</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for rev in review %}
-            <li class="list-group-item">{{ rev.score }} {{ rev.text }} {{ rev.date }}</li>
+            <tr>
+                <td>
+                    {% for _ in range(rev.score) %}
+                        <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for _ in range(5 - rev.score) %}
+                        <i class="far fa-star"></i>
+                    {% endfor %}
+                </td>
+                <td>{{ rev.text }}</td>
+                <td>{{ rev.date }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
 {% endblock content %}
