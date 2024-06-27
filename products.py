@@ -56,4 +56,16 @@ def add_to_cart(idx):
 
 @products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])
 def modify_product(idx):
-    return render_template('modify_product.html')
+    if current_user.role == 'seller' or current_user.role == 'admin':
+        product = Product.query.filter_by(id=idx).first()
+        form = AddProductForm(obj=product)
+        if form.validate_on_submit():
+            product.name = form.name.data
+            product.description = form.description.data
+            product.amount = form.amount.data
+            product.price = form.price.data
+            db.session.commit()
+            return redirect(url_for('products_blueprint.products'))
+        return render_template('modify_product.html', form=form)
+    else:
+        raise Unauthorized()

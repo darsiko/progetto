@@ -1,4 +1,12 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
 {% block content %}
-
+    <form action="{{ url_for('review_blueprint.add_review', idx=product.id) }}" method="POST">
+        <button type="submit" class="btn btn-primary me-2">Add Review</button>
+    </form>
+    <h1>{{ product.name }}</h1>
+    <ul class="list-group">
+        {% for rev in review %}
+            <li class="list-group-item">{{ rev.score }} {{ rev.text }} {{ rev.date }}</li>
+        {% endfor %}
+    </ul>
 {% endblock content %}

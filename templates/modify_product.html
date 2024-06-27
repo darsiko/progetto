@@ -1,4 +1,26 @@
 {% extends 'index.html' %}
 {% block content %}
-
+<div class="container mt-5">
+    <h2 class="mb-4">Modify Product</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="name" class="form-label">{{ form.name.label }}</label>
+            {{ form.name(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">{{ form.description.label }}</label>
+            {{ form.description(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">{{ form.amount.label }}</label>
+            {{ form.amount(class="form-control", size=32) }}
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">{{ form.price.label }}</label>
+            {{ form.price(class="form-control", size=32) }}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+</div>
 {% endblock content %}
