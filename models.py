@@ -2,7 +2,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
@@ -87,7 +87,7 @@ class Product(db.Model):
 class Order(db.Model):
     __tablename__ = 'order'
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    date = db.Column(db.DateTime)
     state = db.Column(db.String(80))
     total = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -106,7 +106,7 @@ class Order(db.Model):
 class Cart(db.Model):
     __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key=True)
-    last_modified = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    last_modified = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     cart_items = db.relationship('CartItem', backref='cart', lazy=True)

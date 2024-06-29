@@ -18,9 +18,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Amount</th>
                             <th scope="col">Price</th>
-                            {% if current_user.is_authenticated %}
-                                <th scope="col">Action</th>
-                            {% endif %}
+                            <th scope="col">Action</th>
                             {% if current_user.role == 'admin' %}
                                 <th scope="col">Admin Action</th>
                             {% endif %}
@@ -33,18 +31,18 @@
                                 <td>{{ product.description }}</td>
                                 <td>{{ product.amount }}</td>
                                 <td>{{ product.price }}</td>
-                                {% if current_user.is_authenticated %}
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <form action="{{ url_for('products_blueprint.add_to_cart', idx=product.id) }}" method="POST">
+                                            {% if current_user.is_authenticated %}
+                                            <form action="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}" method="POST">
                                                 <button type="submit" class="btn btn-primary me-2">Add to Cart</button>
                                             </form>
+                                            {% endif %}
                                             <form action="{{ url_for('review_blueprint.review', idx=product.id) }}" method="POST">
                                                 <button type="submit" class="btn btn-primary">Review</button>
                                             </form>
                                         </div>
                                     </td>
-                                {% endif %}
                                 {% if current_user.role == 'admin' %}
                                     <td>
                                         <div class="btn-group" role="group">
