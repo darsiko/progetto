@@ -1,9 +1,9 @@
-from datetime import date
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import current_user
+from sqlalchemy import func
 from werkzeug.exceptions import Unauthorized
 from form import AddProductForm
-from models import Product, db, Cart, CartItem
+from models import Product, db, Review
 
 products_blueprint = Blueprint('products_blueprint', __name__, template_folder="templates", static_folder="static")
 
@@ -11,7 +11,20 @@ products_blueprint = Blueprint('products_blueprint', __name__, template_folder="
 @products_blueprint.route("/products")
 def products():
     items = Product.query.all()
-    return render_template("products.html", products=items)
+    item_with_score = []
+    for i in items:
+        avg = db.session.query(func.avg(Review.score)).filter(Review.product_id == i.id).scalar()
+        if avg is not None:
+            avg = round(avg, 1)
+        item_with_score.append({
+            'id': i.id,
+            'name': i.name,
+            'price': i.price,
+            'description': i.description,
+            'amount': i.amount,
+            'avg': avg
+        })
+    return render_template("products.html", products=item_with_score)
 
 
 @products_blueprint.route('/<int:idx>/delete', methods=['POST'])

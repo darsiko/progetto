@@ -18,6 +18,7 @@ def cart():
 
         for cart_item, product in cart_items:
             products_in_cart.append({
+                'cart_id': cart_item.cart_id,
                 'product_id': product.id,
                 'name': product.name,
                 'description': product.description,
@@ -48,5 +49,14 @@ def add_to_cart(idx):
 
     carr.last_modified = date.today()
 
+    db.session.commit()
+    return redirect(url_for('cart_blueprint.cart'))
+
+
+@cart_blueprint.route('/cart/<int:idp>/<int:idc>/remove', methods=['GET', 'POST'])
+@login_required
+def remove(idp, idc):
+    cart_item = CartItem.query.filter_by(cart_id=idc, product_id=idp).first()
+    db.session.delete(cart_item)
     db.session.commit()
     return redirect(url_for('cart_blueprint.cart'))
