@@ -6,10 +6,10 @@ from error import error_pages_blueprint
 from products import products_blueprint
 from admin import admin_blueprint
 from cart import cart_blueprint
-from orders import orders_blueprint
 from private_area import private_area_blueprint
 from users import users_blueprint
 from review import review_blueprint
+from orders import orders_blueprint
 
 
 @login_manager.user_loader
@@ -32,6 +32,7 @@ app.register_blueprint(orders_blueprint)
 app.register_blueprint(private_area_blueprint)
 app.register_blueprint(users_blueprint)
 app.register_blueprint(review_blueprint)
+app.register_blueprint(orders_blueprint)
 
 if __name__ == "__main__":
     app.run(debug=True)
