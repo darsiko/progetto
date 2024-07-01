@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS Product(
     name VARCHAR(20),
     description TEXT,
     price FLOAT,
-    amount INTEGER,
-    FOREIGN KEY (seller_id) REFERENCES "User"(id)
+    amount INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS "Order"(
@@ -26,24 +25,19 @@ CREATE TABLE IF NOT EXISTS "Order"(
     date DATE,
     state TEXT,
     total INTEGER,
-    amount INTEGER,
-    FOREIGN KEY (user_id) REFERENCES "User"(id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
+    amount INTEGER
 );
 
 create table if not exists Cart(
     id serial not null primary key,
     user_id integer,
-    date date,
-    FOREIGN KEY (user_id) REFERENCES "User"(id)
+    date date
 );
 
 create table if not exists CartItem(
     cart_id integer,
     product_id integer,
     amount integer,
-    foreign key (cart_id) references Cart(id),
-    FOREIGN KEY (product_id) REFERENCES Product(id),
     primary key (cart_id, product_id)
 );
 
@@ -56,8 +50,6 @@ create table if not exists Category(
 create table if not exists ProductCategory(
     product_id integer,
     category_id integer,
-    FOREIGN KEY (product_id) REFERENCES Product(id),
-    foreign key (category_id) references Category(id),
     primary key (product_id,category_id)
 );
 
@@ -67,7 +59,5 @@ create table if not exists Rewie(
     product_id integer,
     score integer,
     rewie text,
-    date date,
-    FOREIGN KEY (user_id) REFERENCES "User"(id),
-    FOREIGN KEY (product_id) REFERENCES Product(id)
+    date date
 );
