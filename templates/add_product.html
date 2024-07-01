@@ -20,6 +20,10 @@
                 <label for="address" class="form-label">{{ form.price.label }}</label>
                 {{ form.price(class="form-control", size=32) }}
             </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">{{ form.image.label }}</label>
+                <input type="file" name="file">
+            </div>
             <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
         </form>
     </div>
