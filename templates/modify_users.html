@@ -16,10 +16,12 @@
             <label for="address" class="form-label">{{ form.address.label }}</label>
             {{ form.address(class="form-control", size=32) }}
         </div>
+        {% if current_user.role == 'admin' %}
         <div class="mb-3">
             <label for="role" class="form-label">{{ form.role.label }}</label>
             {{ form.role(class="form-control") }}
         </div>
+        {% endif %}
         <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
     </form>
 </div>

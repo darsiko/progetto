@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField, FileRequired
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.fields.choices import SelectField
 from wtforms.fields.numeric import IntegerField, DecimalField
@@ -37,6 +38,7 @@ class AddProductForm(FlaskForm):
     description = StringField('description', validators=[DataRequired(), Length(min=10, max=1000)])
     amount = IntegerField('amount', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired(), NumberRange(min=0)], places=2)
+    file = FileField('file', validators=[FileRequired(), FileAllowed(['jpg', 'jpeg', 'png'])])
     submit = SubmitField('Add')
 
 

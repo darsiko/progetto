@@ -1,7 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+import os
+from flask import Blueprint, render_template, redirect, url_for, flash, current_app
 from flask_login import current_user
 from sqlalchemy import func
 from werkzeug.exceptions import Unauthorized
+from werkzeug.utils import secure_filename
+
 from form import AddProductForm
 from models import Product, db, Review
 
@@ -54,17 +57,18 @@ def add_product():
         if form.validate_on_submit():
             new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.description.data,
                                   amount=form.amount.data, price=form.price.data)
+            file = form.file.data
+            if file:
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(current_app.config['UPLOADED_FOLDER'], filename))
+
             db.session.add(new_product)
             db.session.commit()
+
             return redirect(url_for("products_blueprint.own_products", idx=current_user.id))
         return render_template("add_product.html", form=form)
     else:
         raise Unauthorized()
-
-
-@products_blueprint.route('/<int:idx>/add_to_cart', methods=['POST'])
-def add_to_cart(idx):
-    return redirect(url_for('products_blueprint.products'))
 
 
 @products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from werkzeug.exceptions import Unauthorized
 from models import User, db
 from form import ModifyUser
@@ -43,3 +43,16 @@ def delete(idx):
     else:
         raise Unauthorized()
 
+
+@users_blueprint.route('/private_area/edit', methods=['GET', 'POST'])
+@login_required
+def edit():
+    user = User.query.filter_by(id=current_user.id).first()
+    form = ModifyUser(obj=user)
+    if form.validate_on_submit():
+        user.name = form.name.data
+        user.email = form.email.data
+        user.address = form.address.data
+        db.session.commit()
+        return redirect(url_for('private_area_blueprint.private_area'))
+    return render_template('modify_users.html', form=form)

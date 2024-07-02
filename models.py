@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, LoginManager
@@ -11,6 +12,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ubersecret'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOADED_FOLDER'] = os.path.join(os.getcwd(), 'static/uploads')
 conn = 'postgresql://postgres:postgres@localhost:5433/e_commerce'
 app.config['SQLALCHEMY_DATABASE_URI'] = conn
 

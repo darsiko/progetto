@@ -6,30 +6,8 @@
         <li class="list-group-item">{{ current_user.address }}</li>
         <li class="list-group-item">{{ current_user.role }}</li>
     </ul>
-    <button type="button" class="btn btn-primary">Modifica profilo</button>
-    <form id="editProfileForm" style="display: none;" method="post" action="/update-profile">
-        <div class="form-group">
-            <label for="name">Nome</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{ current_user.name }}">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}">
-        </div>
-        <div class="form-group">
-            <label for="address">Indirizzo</label>
-            <input type="text" class="form-control" id="address" name="address" value="{{ current_user.address }}">
-        </div>
-        <div class="form-group">
-            <label for="role">Ruolo</label>
-            <input type="text" class="form-control" id="role" name="role" value="{{ current_user.role }}">
-        </div>
-        <button type="submit" class="btn btn-success">Salva</button>
+    <form method="POST" action="{{ url_for('users_blueprint.edit') }}">
+        <button type="submit" class="btn btn-primary">Edit profile</button>
     </form>
 
-    <script>
-        function showForm() {
-            document.getElementById('editProfileForm').style.display = 'block';
-        }
-    </script>
 {% endblock %}
