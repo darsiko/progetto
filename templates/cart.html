@@ -27,8 +27,20 @@
                                 </td>
                             </tr>
                         {% endfor %}
+
                     </tbody>
                 </table>
+                <form method="POST" action="{{ url_for("orders_blueprint.add_order") }}">
+                    {% for product in cart %}
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                        <input type="hidden" name="name" value="{{ product.name }}">
+                        <input type="hidden" name="quantity" value="{{ product.quantity }}">
+                        <input type="hidden" name="price" value="{{ product.price }}">
+                    {% endfor %}
+                    {% if cart %}
+                        <button type="submit" class="btn btn-primary">Buy</button>
+                    {% endif %}
+                </form>
             </div>
         </div>
     </div>
