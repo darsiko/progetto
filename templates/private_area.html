@@ -1,13 +1,16 @@
 {% extends 'index.html' %}
 {% block content %}
-    <ul class="list-group">
+    <div class="container">
+         <div class="row justify-content-center center mt-5">
+             <ul class="list-group">
         <li class="list-group-item">{{ current_user.name }}</li>
         <li class="list-group-item">{{ current_user.email }}</li>
         <li class="list-group-item">{{ current_user.address }}</li>
         <li class="list-group-item">{{ current_user.role }}</li>
-    </ul>
-    <form method="POST" action="{{ url_for('users_blueprint.edit') }}">
-        <button type="submit" class="btn btn-primary">Edit profile</button>
-    </form>
-
+            </ul>
+        <form method="POST" class="mt-5" action="{{ url_for('users_blueprint.edit') }}">
+            <button type="submit" class="btn btn-primary">Edit profile</button>
+        </form>
+        </div>
+    </div>
 {% endblock %}

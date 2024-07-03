@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block content %}
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row mt-5 justify-content-center">
             <div class="col-md-10">
                 <table class="table table-bordered">
                     <thead>
@@ -11,10 +11,11 @@
                             <th scope="col">State</th>
                             <th scope="col">Total</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Action</th>
+
                             {% if current_user.role == 'admin' %}
                                 <th scope="col">Admin Action</th>
                             {% endif %}
+                                <th scope="col">Resume</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,8 +26,18 @@
                                 <td>{{ order.state }}</td>
                                 <td>{{ order.total }}</td>
                                 <td>{{ order.quantity }}</td>
-                                <td>Button</td>
-                                <td>Button</td>
+                                <td>
+                                     {% if order.state == "ordinato" %}
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ range(1, 99) | random }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                     {% else %}
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                     {% endif %}
+                                </td>
+
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -34,4 +45,5 @@
             </div>
         </div>
     </div>
+
 {% endblock content %}
