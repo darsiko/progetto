@@ -11,6 +11,3 @@ create or replace trigger trig_1
 after insert on "order"
 for each statement
 execute function fun_1();
-
-
-
