@@ -52,7 +52,7 @@ def own_products(idx):
 
 @products_blueprint.route('/own_products/add', methods=['GET', 'POST'])
 def add_product():
-    if current_user.role == 'seller':
+    if current_user.role == 'seller' or current_user.role == 'admin':
         form = AddProductForm()
         if form.validate_on_submit():
             new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.description.data,
