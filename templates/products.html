@@ -3,15 +3,57 @@
     <div class="container">
         <div class="row mt-5 justify-content-center">
             <div class="col-md-8">
-                <form class="d-flex justify-content-center mb-3" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                <form role="search">
+                    <div class="d-flex justify-content-center mb-3">
+                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <div class="col-md-3">
+                                    <button class="btn btn-outline-success" onclick="myFunction()" type="submit">Search</button>
+                                    <a class="btn btn-outline-danger" onclick="myFunction()">Filter</a>
+                            </div>
+                    </div>
+                    <div class="container">
+                    <div class="col-md-12 card me-5" style="display: none; margin-bottom: 10px; max-width: 90%; height: 90%" id="myDIV">
+                                <div class="d-flex flex-column card-body">
+                                    <div class="col-md-12">
+                                        <p>- From Price:</p>
+                                            <input class="col-md-12" type="range" value="24" min="1" max="10000" oninput="this.nextElementSibling.value = this.value">
+                                          <output>24</output>€
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>- Category:</p>
+                                        <select class="form-select">
+                                          <option>Cat1</option>
+                                          <option>Cat2</option>
+                                          <option>Cat3</option>
+                                          <option>Cat4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
                 </form>
             </div>
         </div>
+
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    </script>
+        <script>
+
+   function myFunction() {
+      var x = document.getElementById("myDIV");
+      if (x.style.display === "none" || x.style.display === "") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+        x.style.display = "none";
+      }
+}
+</script>
+
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <table class="table table-bordered">
+                <table class="table table-bordered ">
                     <thead>
                         <tr>
                             <th scope="col">Average score</th>
