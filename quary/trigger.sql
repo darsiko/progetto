@@ -8,12 +8,32 @@ BEGIN
     SET amount = amount - NEW.quantity
     WHERE id = NEW.product_id;
 
+    DELETE FROM cart_item
+    WHERE product_id IN
+    (SELECT product_id FROM "order");
+
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_order_insert
+CREATE OR REPLACE TRIGGER after_order_insert
 AFTER INSERT ON "order"
 FOR EACH ROW
 EXECUTE FUNCTION update_product_amount();
+
+
+CREATE OR REPLACE FUNCTION delete_items() RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE cart
+    SET last_modified = CURRENT_DATE
+    WHERE id = OLD.cart_id;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER after_cart_item_delete
+AFTER DELETE ON cart_item
+FOR EACH ROW
+EXECUTE FUNCTION delete_items();
+
 

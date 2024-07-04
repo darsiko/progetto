@@ -5,10 +5,10 @@
             <div class="col-md-8">
                 <form role="search">
                     <div class="d-flex justify-content-center mb-3">
-                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <div class="col-md-3">
-                                    <button class="btn btn-outline-success" onclick="myFunction()" type="submit">Search</button>
-                                    <a class="btn btn-outline-danger" onclick="myFunction()">Filter</a>
+                                <button class="btn btn-outline-success" onclick="myFunction()" type="submit">Search</button>
+                                <a class="btn btn-outline-danger" onclick="myFunction()">Filter</a>
                             </div>
                     </div>
                     <div class="container">
@@ -35,21 +35,19 @@
             </div>
         </div>
 
-    <script src=
-"https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
+    <script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js">
     </script>
         <script>
-
-   function myFunction() {
-      var x = document.getElementById("myDIV");
-      if (x.style.display === "none" || x.style.display === "") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-        x.style.display = "none";
-      }
-}
-</script>
+            function myFunction() {
+                var x = document.getElementById("myDIV");
+                if (x.style.display === "none" || x.style.display === "") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                    x.style.display = "none";
+                }
+            }
+        </script>
 
         <div class="row justify-content-center">
             <div class="col-md-10">
