@@ -45,9 +45,9 @@
                             <a class="nav-link" href="{{url_for('orders_blueprint.orders')}}">Orders</a>
                         </li>
                     {% endif %}
-                        <li class="nav-item">
+                        {#<li class="nav-item">
                             <a class="nav-link" href="{{url_for('products_blueprint.products')}}">Products</a>
-                        </li>
+                        </li>#}
                     {% if current_user.role == 'admin' %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('users_blueprint.users')}}">Users</a>
@@ -66,13 +66,14 @@
            <section class="py-5">
            <div class="text-center">
 
-                <h1>Last Added Products</h1>
+                <h1>Products</h1>
            </div>
 
                <div class="container px-4 px-lg-4 mt-5">
 
                 <div class="row gx-4 row-cols-2 row-cols-md-4 justify-content-center">
                    <!-- fare for prodotti -->
+                    {% for product in products %}
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Sale badge-->
@@ -83,21 +84,22 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Sale Item</h5>
+                                    <h5 class="fw-bolder">{{ product.name }}</h5>
                                     <!-- Product price-->
-                                    <span class="text-muted text-decoration-line-through">$40.00</span>
-                                    $25.00
+                                    {#<span class="text-muted text-decoration-line-through">$40.00</span>#}
+                                    ${{ product.price }}
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer pt-0 border-top-0 bg-transparent">
                                 <div class="d-grid gap-3">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="product.html">View</a></div>
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('products_blueprint.product', idx=product.id) }}">View</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}">Add to cart</a></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -132,7 +134,7 @@
             data-mdb-ripple-color="dark"><i class="fa fa-google"></i></a>
 
           <!-- Instagram -->
-          <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="#!" role="button"
+          <a data-mdb-ripple-init class="btn btn-link btn-floating btn-lg text-body m-1" href="https://www.instagram.com/leo.zanna/" role="button"
             data-mdb-ripple-color="dark"><i class="fa fa-instagram"></i></a>
 
           <!-- Linkedin -->

@@ -86,3 +86,9 @@ def modify_product(idx):
         return render_template('modify_product.html', form=form)
     else:
         raise Unauthorized()
+
+
+@products_blueprint.route('/products/product/<int:idx>')
+def product(idx):
+    item = Product.query.filter_by(id=idx).first()
+    return render_template('product.html', product=item)

@@ -70,12 +70,6 @@
                         {% for product in products %}
                             <tr>
                                 <td>
-                                    {#{% for _ in range(product.avg) %}
-                                        <i class="fas fa-star"></i>
-                                    {% endfor %}
-                                    {% for _ in range(5 - product.avg) %}
-                                        <i class="far fa-star"></i>
-                                    {% endfor %}#}
                                     {{ product.avg }}
                                 </td>
                                 <td>{{ product.name }}</td>
