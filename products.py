@@ -57,12 +57,17 @@ def add_product():
         if form.validate_on_submit():
             new_product = Product(name=form.name.data, seller_id=current_user.id, description=form.description.data,
                                   amount=form.amount.data, price=form.price.data)
-            file = form.file.data
-            if file:
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(current_app.config['UPLOADED_FOLDER'], filename))
 
             db.session.add(new_product)
+            db.session.flush()
+
+            product_id = new_product.id
+
+            file = form.file.data
+            if file:
+                filename = f"{product_id}.jpg"
+                file.save(os.path.join(current_app.config['UPLOADED_FOLDER'], filename))
+
             db.session.commit()
 
             return redirect(url_for("products_blueprint.own_products", idx=current_user.id))
