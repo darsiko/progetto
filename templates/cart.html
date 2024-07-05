@@ -2,6 +2,12 @@
 {% block content %}
     <div class="container">
         <div class="row mt-5 justify-content-center">
+         <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index') }}>Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cart</li>
+          </ol>
+        </nav>
             <div class="col-md-10">
                 <table class="table table-bordered">
                     <thead>

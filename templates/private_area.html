@@ -1,7 +1,14 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="container">
+
          <div class="row justify-content-center center mt-5">
+             <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index') }}>Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User</li>
+          </ol>
+        </nav>
              <ul class="list-group">
         <li class="list-group-item">{{ current_user.name }}</li>
         <li class="list-group-item">{{ current_user.email }}</li>

@@ -1,6 +1,12 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="container mt-5">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index')}}>Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Products</li>
+          </ol>
+        </nav>
         <div class="d-grid gap-2 col-6 mx-auto mb-4">
             <a href="{{ url_for('products_blueprint.add_product') }}" class="btn btn-primary" type="button">Add products</a>
         </div>
@@ -24,7 +30,7 @@
                         <td>{{ product.description }}</td>
                         <td>{{ product.amount }}</td>
                         <td>{{ product.price }}</td>
-                        <td><img alt="image-prod" width="50%" height="50%" src={{ product.file }}/></td>
+                        <td><img alt="image-prod" width="15%" height="15%" src={{ url_for('static', filename='uploads/'+ product.id | string +".jpg") }}/></td>
                         <td>
                             <div class="btn-group" role="group">
                                 <form action="{{ url_for("products_blueprint.modify_product", idx=product.id) }}" method="POST">
