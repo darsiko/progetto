@@ -59,6 +59,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Amount</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Action</th>
                             {% if current_user.role == 'admin' %}
                                 <th scope="col">Admin Action</th>
@@ -81,6 +82,7 @@
                                 <td>{{ product.description }}</td>
                                 <td>{{ product.amount }}</td>
                                 <td>{{ product.price }}</td>
+                                <td><img alt="image-prod" width="50%" height="50%" src={{ product.file }}/></td>
                                     <td>
                                         <div class="btn-group" role="group">
                                             {% if current_user.is_authenticated %}

@@ -12,6 +12,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Price</th>
+                     <th scope="col">Image</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                         <td>{{ product.description }}</td>
                         <td>{{ product.amount }}</td>
                         <td>{{ product.price }}</td>
+                        <td><img alt="image-prod" width="50%" height="50%" src={{ product.file }}/></td>
                         <td>
                             <div class="btn-group" role="group">
                                 <form action="{{ url_for("products_blueprint.modify_product", idx=product.id) }}" method="POST">
