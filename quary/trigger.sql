@@ -37,3 +37,42 @@ FOR EACH ROW
 EXECUTE FUNCTION delete_items();
 
 
+CREATE OR REPLACE FUNCTION check_unique_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        IF EXISTS (SELECT 1 FROM "user" WHERE name = NEW.name) THEN
+            RAISE EXCEPTION 'Username % already exists', NEW.name;
+        END IF;
+
+        IF EXISTS (SELECT 1 FROM "user" WHERE email = NEW.email) THEN
+            RAISE EXCEPTION 'Email % already exists', NEW.email;
+        END IF;
+
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF EXISTS (SELECT 1 FROM "user" WHERE name = NEW.name AND id != OLD.id) THEN
+            RAISE EXCEPTION 'Username % already exists', NEW.name;
+        END IF;
+
+        IF EXISTS (SELECT 1 FROM "user" WHERE email = NEW.email AND id != OLD.id) THEN
+            RAISE EXCEPTION 'Email % already exists', NEW.email;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER before_insert_or_update_user
+BEFORE INSERT OR UPDATE
+ON "user"
+FOR EACH ROW
+EXECUTE FUNCTION check_unique_user();
+
+
+
+
+
+
+
+
