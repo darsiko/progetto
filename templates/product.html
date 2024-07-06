@@ -1,7 +1,14 @@
 {% extends 'index.html' %}
 {% block content %}
+
     <section class="py-5">
         <div class="container px-4 my-5">
+             <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index') }}>Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+          </ol>
+        </nav>
             <div class="row gx-4 gx-lg-5 align-items-center">
                 <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ url_for('static', filename='uploads/' ~ product.id ~ '.jpg') }}" alt="..." /></div>
                 <div class="col-md-6">
@@ -14,10 +21,15 @@
                     <p class="lead">{{ product.description }}</p>
                     <div class="d-flex">
                         <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <button class="btn btn-outline-dark m-lg-1 flex-shrink-0" type="button">
                             <i class="bi-cart-fill me-1"></i>
                             Add to cart
                         </button>
+                        <button class="btn btn-outline-dark m-lg-1 flex-shrink-0" type="button">
+                            <i class="fa fa-star"></i>
+                            Recensione
+                        </button>
+
                     </div>
                 </div>
             </div>
