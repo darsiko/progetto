@@ -1,6 +1,6 @@
 from datetime import date
 
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
 from models import Cart, CartItem, Product, db, session
 
@@ -29,9 +29,10 @@ def cart():
     return render_template('cart.html', cart=products_in_cart)
 
 
-@cart_blueprint.route('/cart/<int:idx>/add', methods=['GET', 'POST'])
+@cart_blueprint.route('/cart/<int:idx>/add', methods=['POST'])
 @login_required
 def add_to_cart(idx):
+    quantity = request.form.get('quantity', 1)
     carr = Cart.query.filter_by(user_id=current_user.id).first()
 
     if not carr:
@@ -42,15 +43,15 @@ def add_to_cart(idx):
     cart_item = CartItem.query.filter_by(cart_id=carr.id, product_id=idx).first()
 
     if cart_item:
-        cart_item.quantity += 1
+        cart_item.quantity += int(quantity)
     else:
-        cart_item = CartItem(product_id=idx, cart_id=carr.id, quantity=1)
+        cart_item = CartItem(product_id=idx, cart_id=carr.id, quantity=int(quantity))
         db.session.add(cart_item)
 
     carr.last_modified = date.today()
 
     db.session.commit()
-    return redirect(url_for('products_blueprint.products'))
+    return redirect(url_for('index_blueprint.index'))
 
 
 @cart_blueprint.route('/cart/<int:idp>/<int:idc>/remove', methods=['GET', 'POST'])

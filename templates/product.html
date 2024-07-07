@@ -1,40 +1,38 @@
 {% extends 'index.html' %}
 {% block content %}
-
-    <section class="py-5">
-        <div class="container px-4 my-5">
-             <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index') }}>Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
-          </ol>
-        </nav>
-            <div class="row gx-4 gx-lg-5 align-items-center">
-                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ url_for('static', filename='uploads/' ~ product.id ~ '.jpg') }}" alt="..." /></div>
-                <div class="col-md-6">
-                    {#<div class="small mb-1">SKU: BST-498</div>#}
-                    <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
-                    <div class="fs-5 mb-5">
-                        {#<span class="text-decoration-line-through">$45.00</span>#}
-                        <span>${{ product.price }}</span>
-                    </div>
-                    <p class="lead">{{ product.description }}</p>
-                    <div class="d-flex">
-                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                        <button class="btn btn-outline-dark m-lg-1 flex-shrink-0" type="button">
+<section class="py-5">
+    <div class="container px-4 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6">
+                <img class="card-img-top mb-5 mb-md-0" src="{{ url_for('static', filename='uploads/' ~ product.id ~ '.jpg') }}" alt="..." />
+            </div>
+            <div class="col-md-6">
+                <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>${{ product.price }}</span>
+                </div>
+                <p class="lead">{{ product.description }}</p>
+                <div class="d-flex align-items-center">
+                    <form method="POST" action="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}" class="d-flex align-items-center">
+                        <input class="form-control text-center me-3" id="inputQuantity" name="quantity" type="number" value="1" style="max-width: 3rem" />
+                        <button id="addToCartButton" class="btn btn-outline-dark flex-shrink-0" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Add to cart
                         </button>
-                        <button class="btn btn-outline-dark m-lg-1 flex-shrink-0" type="button">
+                    </form>
+                    <form method="GET" action="{{ url_for('review_blueprint.review', idx=product.id) }}" class="ms-2">
+                        <button id="reviewButton" class="btn btn-outline-dark flex-shrink-0" type="submit">
                             <i class="fa fa-star"></i>
-                            Recensione
+                            Review
                         </button>
-
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+
         {#<!-- Related items section-->
         <section class="py-5 bg-light">
             <div class="container px-4 px-lg-5 mt-5">

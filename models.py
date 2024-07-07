@@ -8,6 +8,7 @@ from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask_migrate import Migrate
+from flask_wtf import CSRFProtect
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ubersecret'
@@ -25,6 +26,7 @@ login_manager.login_message_category = 'info'
 engine = create_engine(conn)
 Session = sessionmaker(bind=engine)
 session = Session()
+csrf = CSRFProtect(app)
 
 
 class User(db.Model, UserMixin):

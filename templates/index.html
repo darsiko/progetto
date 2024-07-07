@@ -104,7 +104,7 @@
     </script>
         <script>
             function myFunction() {
-                var x = document.getElementById("myDIV");
+                let x = document.getElementById("myDIV");
                 if (x.style.display === "none" || x.style.display === "") {
                     x.style.display = "block";
                 } else {
@@ -118,7 +118,6 @@
                <div class="container px-4 px-lg-4 mt-5">
 
                 <div class="row gx-4 row-cols-2 row-cols-md-4 justify-content-center">
-                   <!-- fare for prodotti -->
                     {% for product in products %}
                     <div class="col mb-5">
                         <div class="card h-100">
@@ -139,8 +138,13 @@
                             <!-- Product actions-->
                             <div class="card-footer pt-0 border-top-0 bg-transparent">
                                 <div class="d-grid gap-3">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('products_blueprint.product', idx=product.id) }}">View</a></div>
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}">Add to cart</a></div>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('products_blueprint.product', idx=product.id) }}">View</a></div>
+                                    <div class="text-center">
+                                        <form action="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}" method="post" class="d-inline">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

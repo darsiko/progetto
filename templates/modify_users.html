@@ -1,13 +1,7 @@
 {% extends 'index.html' %}
 {% block content %}
 <div class="container mt-5">
- <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href={{ url_for('index_blueprint.index') }}>Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Modify User</li>
-          </ol>
-        </nav>
-    <h2 class="mb-4">Modify User</h2>
+    <h2 class="mb-4">Edit User</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
         <div class="mb-3">

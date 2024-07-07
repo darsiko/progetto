@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user
-
 from form import ReviewForm
 from models import Review, Product, db, User
 from datetime import date

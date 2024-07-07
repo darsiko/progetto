@@ -34,9 +34,11 @@
                         <td>
                             <div class="btn-group" role="group">
                                 <form action="{{ url_for("products_blueprint.modify_product", idx=product.id) }}" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="btn btn-primary me-2">Edit</button>
                                 </form>
                                 <form action="{{ url_for("products_blueprint.delete", idx=product.id) }}" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="btn btn-danger" >Delete</button>
                                 </form>
                             </div>
