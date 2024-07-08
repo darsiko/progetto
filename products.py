@@ -104,3 +104,13 @@ def modify_product(idx):
 def product(idx):
     item = Product.query.filter_by(id=idx).first()
     return render_template('product.html', product=item)
+
+
+@products_blueprint.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '')
+    if query:
+        items = Product.query.filter(Product.name.ilike(f'%{query}%')).all()
+    else:
+        items = Product.query.all()
+    return render_template('index.html', products=items)
