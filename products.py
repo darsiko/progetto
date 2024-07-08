@@ -107,7 +107,7 @@ def product(idx):
 
 
 @products_blueprint.route('/search', methods=['GET'])
-def search():
+def search_by_name():
     query = request.args.get('query', '')
     if query:
         items = Product.query.filter(Product.name.ilike(f'%{query}%')).all()
