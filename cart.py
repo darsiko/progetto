@@ -51,7 +51,7 @@ def add_to_cart(idx):
     carr.last_modified = date.today()
 
     db.session.commit()
-    return redirect(url_for('index_blueprint.index'))
+    return redirect(url_for('cart_blueprint.cart'))
 
 
 @cart_blueprint.route('/cart/<int:idp>/<int:idc>/remove', methods=['GET', 'POST'])

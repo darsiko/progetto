@@ -2,30 +2,29 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">Edit Product</h2>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="mb-3">
             <label for="name" class="form-label">{{ form.name.label }}</label>
             {{ form.name(class="form-control", size=32) }}
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">{{ form.description.label }}</label>
+            <label for="description" class="form-label">{{ form.description.label }}</label>
             {{ form.description(class="form-control", size=32) }}
         </div>
         <div class="mb-3">
-            <label for="password" class="form-label">{{ form.amount.label }}</label>
+            <label for="amount" class="form-label">{{ form.amount.label }}</label>
             {{ form.amount(class="form-control", size=32) }}
         </div>
         <div class="mb-3">
-            <label for="address" class="form-label">{{ form.price.label }}</label>
+            <label for="price" class="form-label">{{ form.price.label }}</label>
             {{ form.price(class="form-control", size=32) }}
         </div>
-        <img alt="image-prod" width="25%" height="25%" src={{ url_for('static', filename='uploads/'+ form.id | string +".jpg") }}/>
+        <img alt="image-prod" width="25%" height="25%" src="{{ url_for('static', filename='uploads/' + product_id | string + '.jpg') }}"/>
         <div class="mb-3">
-            <label for="address" class="form-label">{{ form.file.label }}</label>
+            <label for="file" class="form-label">{{ form.file.label }}</label>
             {{ form.file(class="form-control", size=32) }}
         </div>
-
         <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
     </form>
 </div>

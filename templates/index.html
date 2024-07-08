@@ -140,10 +140,17 @@
                                 <div class="d-grid gap-3">
                                     <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url_for('products_blueprint.product', idx=product.id) }}">View</a></div>
                                     <div class="text-center">
-                                        <form action="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}" method="post" class="d-inline">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
-                                        </form>
+                                        {% if current_user.is_authenticated %}
+                                            <form action="{{ url_for('cart_blueprint.add_to_cart', idx=product.id) }}" method="post" class="d-inline">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                            </form>
+                                        {% else %}
+                                            <form action="{{ url_for('login_blueprint.login') }}" method="get" class="d-inline">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                            </form>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

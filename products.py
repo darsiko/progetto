@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, render_template, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, current_app, request
 from flask_login import current_user
 from sqlalchemy import func
 from werkzeug.exceptions import Unauthorized
@@ -36,7 +36,7 @@ def delete(idx):
         product = Product.query.get_or_404(idx)
         db.session.delete(product)
         db.session.commit()
-        return redirect(url_for('products_blueprint.products'))
+        return redirect(request.headers.get('Referer'))
     else:
         raise Unauthorized()
 
@@ -86,6 +86,13 @@ def modify_product(idx):
             product.description = form.description.data
             product.amount = form.amount.data
             product.price = form.price.data
+
+            if form.file.data:
+                file = form.file.data
+                filename = secure_filename(f"{product.id}.jpg")
+                filepath = os.path.join(current_app.config['UPLOADED_FOLDER'], filename)
+                file.save(filepath)
+
             db.session.commit()
             return redirect(url_for('products_blueprint.products'))
         return render_template('modify_product.html', form=form)

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
 from werkzeug.exceptions import Unauthorized
 from models import User, db
@@ -16,7 +16,7 @@ def users():
         raise Unauthorized()
 
 
-@users_blueprint.route('/<int:idx>/users/modify', methods=['GET', 'POST'])
+@users_blueprint.route('/users/modify/<int:idx>', methods=['GET', 'POST'])
 def modify(idx):
     if current_user.role == 'admin':
         user = User.query.filter_by(id=idx).first()
@@ -33,13 +33,13 @@ def modify(idx):
         raise Unauthorized()
 
 
-@users_blueprint.route('/<int:idx>/delete', methods=['POST'])
+@users_blueprint.route('/users/delete/<int:idx>', methods=['POST'])
 def delete(idx):
     if current_user.role == 'admin':
         user = User.query.get_or_404(idx)
         db.session.delete(user)
         db.session.commit()
-        return redirect(url_for('users_blueprint.users'))
+        return redirect(request.headers.get('Referer'))
     else:
         raise Unauthorized()
 
