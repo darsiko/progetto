@@ -70,7 +70,7 @@
            </div>
            <div class="row mt-5 justify-content-center">
             <div class="col-md-8">
-                <form role="search" action="{{ url_for('products_blueprint.search_by_name') }}" method="GET">
+                <form role="search" action="{{ url_for('products_blueprint.search') }}" method="GET">
                     <div class="d-flex justify-content-center mb-3">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
                             <div class="col-md-3">
@@ -84,16 +84,21 @@
                                 <div class="d-flex flex-column card-body">
                                     <div class="col-md-12">
                                         <p>- From Price:</p>
-                                            <input class="col-md-12" type="range" value="24" min="1" max="10000" oninput="this.nextElementSibling.value = this.value">
-                                          <output>24</output>€
+                                        <input class="col-md-12" type="range" value="24" min="1" max="10000" oninput="this.nextElementSibling.value = this.value" name="min_price">
+                                        <output>1</output>€
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p>- To Price:</p>
+                                        <input class="col-md-12" type="range" value="10000" min="1" max="10000" oninput="this.nextElementSibling.value = this.value" name="max_price">
+                                        <output>100000</output>
                                     </div>
                                     <div class="col-md-12">
                                         <p>- Category:</p>
-                                        <select class="form-select">
-                                          <option>Cat1</option>
-                                          <option>Cat2</option>
-                                          <option>Cat3</option>
-                                          <option>Cat4</option>
+                                        <select class="form-select" name="category">
+                                            <option>Cat1</option>
+                                            <option>Cat2</option>
+                                            <option>Cat3</option>
+                                            <option>Cat4</option>
                                         </select>
                                     </div>
                                 </div>

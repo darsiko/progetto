@@ -107,10 +107,20 @@ def product(idx):
 
 
 @products_blueprint.route('/search', methods=['GET'])
-def search_by_name():
-    query = request.args.get('query', '')
-    if query:
-        items = Product.query.filter(Product.name.ilike(f'%{query}%')).all()
-    else:
-        items = Product.query.all()
-    return render_template('index.html', products=items)
+def search():
+    name = request.args.get('name')
+    min_price = request.args.get('min_price')
+    max_price = request.args.get('max_price')
+    items = Product.query
+    if name:
+        items = items.filter(Product.name.ilike(f'%{name}%'))
+    if min_price:
+        items = items.filter(Product.price >= min_price)
+    if max_price:
+        items = items.filter(Product.price <= max_price)
+
+    products = items.all()
+
+    return render_template('index.html', products=products)
+
+
