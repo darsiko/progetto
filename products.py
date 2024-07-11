@@ -4,9 +4,10 @@ from flask_login import current_user
 from sqlalchemy import func
 from werkzeug.exceptions import Unauthorized
 from werkzeug.utils import secure_filename
+from sqlalchemy.orm import joinedload
 
 from form import AddProductForm
-from models import Product, db, Review
+from models import Product, db, Review, ProductCategory, Category
 
 products_blueprint = Blueprint('products_blueprint', __name__, template_folder="templates", static_folder="static")
 
@@ -109,18 +110,22 @@ def product(idx):
 @products_blueprint.route('/search', methods=['GET'])
 def search():
     name = request.args.get('name')
-    min_price = request.args.get('min_price')
-    max_price = request.args.get('max_price')
-    items = Product.query
-    if name:
-        items = items.filter(Product.name.ilike(f'%{name}%'))
-    if min_price:
-        items = items.filter(Product.price >= min_price)
-    if max_price:
-        items = items.filter(Product.price <= max_price)
+    min_price = request.args.get('min_price', type=float)
+    max_price = request.args.get('max_price', type=float)
+    category = request.args.get('category')
 
-    products = items.all()
+    query = db.session.query(Product).join(ProductCategory, Product.id == ProductCategory.product_id).join(Category, ProductCategory.category_id == Category.id)
+
+    if name:
+        query = query.filter(Product.name == name)
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+    if category:
+        query = query.filter(Category.name == category)
+
+    products = query.all()
 
     return render_template('index.html', products=products)
-
 
