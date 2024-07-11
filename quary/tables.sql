@@ -61,3 +61,15 @@ create table if not exists Rewie(
     rewie text,
     date date
 );
+
+insert into category (name, description)
+values ('Electronics', 'Televisions, smartphones, computers and accessories, cameras and camcorders'),
+       ('Clothing','Men, Women, Children, Accessories'),
+       ('Home and kitchen', 'Furnishings, kitchenware, home decor, lighting'),
+       ('Books', 'Fiction, non-fiction, children books, textbooks'),
+       ('Health and beauty','Skin care products, hair products, nutritional supplements, fitness products'),
+       ('Toys','Educational toys, board games, dolls and soft toys, outdoor games'),
+       ('Sport and free time','Sports equipment, sportswear, outdoor activities, camping accessories'),
+       ('Car and motorcycle','Car parts, accessories for cars, motorcycles and scooters, motorcycle accessories');
+
+
