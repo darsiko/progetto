@@ -62,6 +62,12 @@ def add_product():
             db.session.add(new_product)
             db.session.flush()
 
+            category_name = form.category.data
+            category = Category.query.filter_by(name=category_name).first()
+
+            new_product_category = ProductCategory(product_id=new_product.id, category_id=category.id)
+            db.session.add(new_product_category)
+
             product_id = new_product.id
 
             file = form.file.data

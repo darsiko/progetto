@@ -27,6 +27,12 @@ class AddProductForm(FlaskForm):
     description = StringField('description', validators=[DataRequired(), Length(min=10, max=1000)])
     amount = IntegerField('amount', validators=[DataRequired()])
     price = DecimalField('price', validators=[DataRequired(), NumberRange(min=0)], places=2)
+    category = SelectField('category', choices=[('Electronics', 'Electronics'), ('Clothing', 'Clothing'),
+                                                ('Home and kitchen', 'Home and kitchen'), ('Books', 'Books'),
+                                                ('Health and beauty', 'Health and beauty'), ('Toys', 'Toys'),
+                                                ('Sport and free time', 'Sport and free time'),
+                                                ('Car and motorcycle', 'Car and motorcycle')],
+                           validators=[DataRequired()])
     file = FileField('file', validators=[FileRequired(), FileAllowed(['jpg'])])
     submit = SubmitField('Add')
 
@@ -35,11 +41,13 @@ class ModifyUser(FlaskForm):
     name = StringField('name', validators=[DataRequired(), Length(min=2, max=150)])
     email = StringField('email', validators=[DataRequired(), Email()])
     address = StringField('address', validators=[DataRequired(), Length(min=2, max=150)])
-    role = SelectField('role', choices=[('buyer', 'buyer'), ('seller', 'seller'), ('admin', 'admin')], validators=[DataRequired()])
+    role = SelectField('role', choices=[('buyer', 'buyer'), ('seller', 'seller'), ('admin', 'admin')],
+                       validators=[DataRequired()])
     submit = SubmitField('Edit')
 
 
 class ReviewForm(FlaskForm):
-    score = DecimalField('score', validators=[DataRequired(), NumberRange(min=1, max=5, message="Score must be between 1 and 5")])
+    score = DecimalField('score', validators=[DataRequired(),
+                                              NumberRange(min=1, max=5, message="Score must be between 1 and 5")])
     text = StringField('description', validators=[DataRequired(), Length(min=10, max=1000)])
     submit = SubmitField('Submit')

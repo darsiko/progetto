@@ -1,12 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
     <div class="container mt-5">
-     <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href={{ url_for('products_blueprint.own_products', idx=current_user.id) }}>Products</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Add Product</li>
-          </ol>
-        </nav>
         <h2 class="mb-4">Add Product</h2>
         <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
@@ -26,10 +20,14 @@
                 <label for="address" class="form-label">{{ form.price.label }}</label>
                 {{ form.price(class="form-control", size=32) }}
             </div>
-                <div class="mb-3">
-                    <label for="file" class="form-label">{{ form.file.label }}</label>
-                    {{ form.file(class="form-control") }}
-                </div>
+            <div class="mb-3">
+                <label for="Category" class="form-label">{{ form.category.label }}</label>
+                {{ form.category(class="form-control") }}
+            </div>
+            <div class="mb-3">
+                <label for="file" class="form-label">{{ form.file.label }}</label>
+                {{ form.file(class="form-control") }}
+            </div>
             <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
         </form>
     </div>
