@@ -1,6 +1,8 @@
 import datetime
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from flask_login import current_user
+from werkzeug.exceptions import Unauthorized
+
 from models import Order, Cart, CartItem, Product, db
 
 orders_blueprint = Blueprint('orders_blueprint', __name__, template_folder='templates', static_folder='static')
@@ -19,11 +21,23 @@ def add_order():
     amounts = request.form.getlist('quantity')
     prices = request.form.getlist('price')
 
-    cart = [{"product_id": products_id, "name": names, "amount": int(amounts), "price": float(prices)} for products_id, names, amounts, prices in zip(products_id, names, amounts, prices)]
+    cart = [{"product_id": products_id, "name": names, "amount": int(amounts), "price": float(prices)} for
+            products_id, names, amounts, prices in zip(products_id, names, amounts, prices)]
 
     for item in cart:
-        order = Order(date=datetime.date.today(), state="ordinato", total=item["amount"]*item["price"], user_id=current_user.id, product_id=item["product_id"], quantity=item["amount"])
+        order = Order(date=datetime.date.today(), state="ordinato", total=item["amount"] * item["price"],
+                      user_id=current_user.id, product_id=item["product_id"], quantity=item["amount"])
         db.session.add(order)
         db.session.commit()
 
     return redirect(url_for('orders_blueprint.orders'))
+
+
+@orders_blueprint.route('/orders/menage_orders', methods=["GET", "POST"])
+def menage_orders():
+    if current_user.role == 'seller' or current_user.role == 'admin':
+        subquery = db.session.query(Product.id).filter(Product.seller_id == current_user.id).subquery()
+        query = db.session.query(Order).filter(Order.product_id.in_(subquery)).all()
+        return render_template('menage_orders.html', orders=query)
+    else:
+        raise Unauthorized
