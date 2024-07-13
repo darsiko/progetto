@@ -1,6 +1,5 @@
 from datetime import date
-
-from flask import Blueprint, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from models import Cart, CartItem, Product, db, session
 
@@ -54,10 +53,22 @@ def add_to_cart(idx):
     return redirect(url_for('cart_blueprint.cart'))
 
 
-@cart_blueprint.route('/cart/<int:idp>/<int:idc>/remove', methods=['GET', 'POST'])
+@cart_blueprint.route('/cart/<int:idp>/<int:idc>/remove', methods=['POST'])
 @login_required
 def remove(idp, idc):
     cart_item = CartItem.query.filter_by(cart_id=idc, product_id=idp).first()
     db.session.delete(cart_item)
     db.session.commit()
+    return redirect(url_for('cart_blueprint.cart'))
+
+
+@cart_blueprint.route('/cart/<int:idp>/<int:idc>/update', methods=['POST'])
+@login_required
+def update_quantity(idp, idc):
+    new_quantity = int(request.form.get('quantity'))
+    cart_item = CartItem.query.filter_by(cart_id=idc, product_id=idp).first()
+    if cart_item and new_quantity > 0:
+        cart_item.quantity = new_quantity
+        cart_item.cart.last_modified = date.today()
+        db.session.commit()
     return redirect(url_for('cart_blueprint.cart'))

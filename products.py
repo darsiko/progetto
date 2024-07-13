@@ -87,12 +87,14 @@ def add_product():
 def modify_product(idx):
     if current_user.role == 'seller' or current_user.role == 'admin':
         product = Product.query.filter_by(id=idx).first()
+        category = ProductCategory.query.filter_by(product_id=idx).first()
         form = AddProductForm(obj=product)
         if form.validate_on_submit():
             product.name = form.name.data
             product.description = form.description.data
             product.amount = form.amount.data
             product.price = form.price.data
+            category.category_id = form.category.data
 
             if form.file.data:
                 file = form.file.data

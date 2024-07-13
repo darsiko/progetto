@@ -32,7 +32,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE TRIGGER after_cart_item_delete
-AFTER DELETE ON cart_item
+AFTER DELETE OR UPDATE ON cart_item
 FOR EACH ROW
 EXECUTE FUNCTION delete_items();
 
