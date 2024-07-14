@@ -10,8 +10,19 @@ orders_blueprint = Blueprint('orders_blueprint', __name__, template_folder='temp
 
 @orders_blueprint.route('/orders')
 def orders():
-    order = Order.query.filter_by(user_id=current_user.id)
-    return render_template('orders.html', orders=order)
+    order = Order.query.filter_by(user_id=current_user.id).all()
+    order_with_name = []
+    for i in order:
+        product = Product.query.filter_by(id=i.product_id).first()
+        order_with_name.append({
+            'name': product.name,
+            'date': i.date,
+            'state': i.state,
+            'total': i.total,
+            'quantity': i.quantity
+        })
+
+    return render_template('orders.html', orders=order_with_name)
 
 
 @orders_blueprint.route('/orders', methods=["POST"])

@@ -11,7 +11,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user and user.check_password(form.password.data):
+        if user and user.check_password(form.password.data) and user.role != 'admin':
             login_user(user, remember=form.remember.data)
             return redirect(request.form.get('next') or url_for('index_blueprint.index'))
         flash('Invalid email or password', 'danger')
