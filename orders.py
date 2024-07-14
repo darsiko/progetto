@@ -41,3 +41,16 @@ def menage_orders():
         return render_template('menage_orders.html', orders=query)
     else:
         raise Unauthorized
+
+
+@orders_blueprint.route('/orders/menage_orders/edit_state/<int:idx>', methods=["POST"])
+def edit_state(idx):
+    if current_user.role == 'seller' or current_user.role == 'admin':
+        new_state = request.form.get('new_state')
+        order = Order.query.filter_by(id=idx).first()
+        if order:
+            order.state = new_state
+            db.session.commit()
+        return redirect(url_for('orders_blueprint.menage_orders'))
+    else:
+        raise Unauthorized

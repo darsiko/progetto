@@ -19,18 +19,32 @@
                             <tr>
                                 <td>{{ order.product_id }}</td>
                                 <td>{{ order.date }}</td>
-                                <td>{{ order.state }}</td>
+                                <td>
+                                    <form action="{{ url_for('orders_blueprint.edit_state', idx=order.id) }}" method="post">
+                                        <input type="text" name="new_state" value="{{ order.state }}" />
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </form>
+                                </td>
                                 <td>{{ order.total }}</td>
                                 <td>{{ order.quantity }}</td>
                                 <td>
-                                     {% if order.state == "ordinato" %}
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar" style="width: {{ range(1, 99) | random }}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+                                     {% if order.state == 'ordinato' %}
+                                         <div class="progress">
+                                             <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                         </div>
+                                     {% elif order.state == 'spedito' %}
+                                         <div class="progress">
+                                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                         </div>
+                                     {% elif order.state == 'in transito' %}
+                                         <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                         </div>
                                      {% else %}
-                                        <div class="progress">
+                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+                                         </div>
                                      {% endif %}
                                 </td>
                             </tr>
