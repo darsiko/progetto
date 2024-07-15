@@ -1,11 +1,20 @@
 {% extends "index.html" %}
 {% block content %}
-    <form action="{{ url_for('review_blueprint.add_review', idx=product.id) }}" method="GET">
-        <button type="submit" class="btn btn-primary me-2">Add Review</button>
-    </form>
-    <h1>{{ product.name }}</h1>
-    <table class="table table-bordered">
-        <thead>
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4">{{ product.name }}</h1>
+        </div>
+        <div class="col text-end">
+            <form action="{{ url_for('review_blueprint.add_review', idx=product.id) }}" method="GET">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add Review
+                </button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-hover table-bordered">
+        <thead class="table-dark">
             <tr>
                 <th scope="col">Score</th>
                 <th scope="col">Review</th>
@@ -17,10 +26,10 @@
             <tr>
                 <td>
                     {% for _ in range(rev.score) %}
-                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star text-warning"></i>
                     {% endfor %}
                     {% for _ in range(5 - rev.score) %}
-                        <i class="far fa-star"></i>
+                        <i class="far fa-star text-muted"></i>
                     {% endfor %}
                 </td>
                 <td>{{ rev.text }}</td>
@@ -29,4 +38,5 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
 {% endblock content %}

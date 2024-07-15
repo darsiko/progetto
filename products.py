@@ -112,7 +112,10 @@ def modify_product(idx):
 @products_blueprint.route('/products/product/<int:idx>')
 def product(idx):
     item = Product.query.filter_by(id=idx).first()
-    return render_template('product.html', product=item)
+    avg = db.session.query(func.avg(Review.score)).filter(Review.product_id == idx).scalar()
+    if avg:
+        avg = round(avg, 1)
+    return render_template('product.html', product=item, average=avg)
 
 
 @products_blueprint.route('/search', methods=['GET'])
@@ -122,7 +125,8 @@ def search():
     max_price = request.args.get('max_price', type=float)
     category = request.args.get('category')
 
-    query = db.session.query(Product).join(ProductCategory, Product.id == ProductCategory.product_id).join(Category, ProductCategory.category_id == Category.id)
+    query = db.session.query(Product).join(ProductCategory, Product.id == ProductCategory.product_id).join(Category,
+                                                                                                           ProductCategory.category_id == Category.id)
 
     if name:
         query = query.filter_by(Product.name.ilike(f'%{name}%'))
@@ -136,4 +140,3 @@ def search():
     products = query.all()
 
     return render_template('index.html', products=products, categories=Category.query.all())
-

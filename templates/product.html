@@ -8,8 +8,24 @@
             </div>
             <div class="col-md-6">
                 <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
-                <div class="fs-5 mb-5">
+                <div class="fs-5 mb-3">
                     <span>${{ product.price }}</span>
+                </div>
+                <div class="fs-5 mb-3">
+                    {% if average  %}
+                        <span>{{ average }}</span>
+                        <span class="ms-2">
+                            {% for i in range(1, 6) %}
+                                {% if i <= average|round(0, 'floor') %}
+                                    <i class="fa fa-star text-warning"></i>
+                                {% elif i - average < 1 %}
+                                    <i class="fa fa-star-half-alt text-warning"></i>
+                                {% else %}
+                                    <i class="fa fa-star text-muted"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    {% endif %}
                 </div>
                 <p class="lead">{{ product.description }}</p>
                 <div class="d-flex align-items-center">

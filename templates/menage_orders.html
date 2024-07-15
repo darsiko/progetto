@@ -21,7 +21,12 @@
                                 <td>{{ order.date }}</td>
                                 <td>
                                     <form action="{{ url_for('orders_blueprint.edit_state', idx=order.id) }}" method="post">
-                                        <input type="text" name="new_state" value="{{ order.state }}" />
+                                        <select name="new_state" class="form-select">
+                                            <option value="ordinato" {% if order.state == 'ordinato' %}selected{% endif %}>ordinato</option>
+                                            <option value="spedito" {% if order.state == 'spedito' %}selected{% endif %}>spedito</option>
+                                            <option value="in transito" {% if order.state == 'in transito' %}selected{% endif %}>in transito</option>
+                                            <option value="consegnato" {% if order.state == 'consegnato' %}selected{% endif %}>consegnato</option>
+                                        </select>
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                         <button type="submit" class="btn btn-primary">Update</button>
                                     </form>
