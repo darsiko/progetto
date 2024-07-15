@@ -4,7 +4,6 @@ from flask_login import current_user
 from sqlalchemy import func
 from werkzeug.exceptions import Unauthorized
 from werkzeug.utils import secure_filename
-from sqlalchemy.orm import joinedload
 
 from form import AddProductForm
 from models import Product, db, Review, ProductCategory, Category
@@ -94,7 +93,7 @@ def modify_product(idx):
             product.description = form.description.data
             product.amount = form.amount.data
             product.price = form.price.data
-            category.category_id = form.category.data
+            category.name = form.category.data
 
             if form.file.data:
                 file = form.file.data
@@ -103,7 +102,7 @@ def modify_product(idx):
                 file.save(filepath)
 
             db.session.commit()
-            return redirect(url_for('products_blueprint.products'))
+            return redirect(url_for('products_blueprint.own_products'))
         return render_template('modify_product.html', form=form)
     else:
         raise Unauthorized()
