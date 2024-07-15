@@ -49,7 +49,18 @@ def menage_orders():
     if current_user.role == 'seller' or current_user.role == 'admin':
         subquery = db.session.query(Product.id).filter(Product.seller_id == current_user.id).subquery()
         query = db.session.query(Order).filter(Order.product_id.in_(subquery)).all()
-        return render_template('menage_orders.html', orders=query)
+        order_with_name = []
+        for i in query:
+            product = Product.query.filter_by(id=i.product_id).first()
+            order_with_name.append({
+                'id': i.id,
+                'name': product.name,
+                'date': i.date,
+                'state': i.state,
+                'total': i.total,
+                'quantity': i.quantity
+            })
+        return render_template('menage_orders.html', orders=order_with_name)
     else:
         raise Unauthorized
 

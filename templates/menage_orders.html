@@ -17,7 +17,7 @@
                     <tbody>
                         {% for order in orders %}
                             <tr>
-                                <td>{{ order.product_id }}</td>
+                                <td>{{ order.name }}</td>
                                 <td>{{ order.date }}</td>
                                 <td>
                                     <form action="{{ url_for('orders_blueprint.edit_state', idx=order.id) }}" method="post">
