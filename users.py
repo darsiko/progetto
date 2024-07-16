@@ -8,6 +8,7 @@ users_blueprint = Blueprint('users_blueprint', __name__, template_folder='templa
 
 
 @users_blueprint.route('/users')
+@login_required
 def users():
     if current_user.role == 'admin':
         user = User.query.all()
@@ -17,6 +18,7 @@ def users():
 
 
 @users_blueprint.route('/users/modify/<int:idx>', methods=['GET', 'POST'])
+@login_required
 def modify(idx):
     if current_user.role == 'admin':
         user = User.query.filter_by(id=idx).first()
@@ -34,6 +36,7 @@ def modify(idx):
 
 
 @users_blueprint.route('/users/delete/<int:idx>', methods=['POST'])
+@login_required
 def delete(idx):
     if current_user.role == 'admin':
         user = User.query.get_or_404(idx)

@@ -1,6 +1,6 @@
 import datetime
 from flask import Blueprint, render_template, redirect, url_for, session, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 from werkzeug.exceptions import Unauthorized
 
 from models import Order, Cart, CartItem, Product, db
@@ -9,6 +9,7 @@ orders_blueprint = Blueprint('orders_blueprint', __name__, template_folder='temp
 
 
 @orders_blueprint.route('/orders')
+@login_required
 def orders():
     order = Order.query.filter_by(user_id=current_user.id).all()
     order_with_name = []
@@ -26,6 +27,7 @@ def orders():
 
 
 @orders_blueprint.route('/orders', methods=["POST"])
+@login_required
 def add_order():
     products_id = request.form.getlist('product_id')
     names = request.form.getlist('name')
@@ -45,6 +47,7 @@ def add_order():
 
 
 @orders_blueprint.route('/orders/menage_orders', methods=["GET", "POST"])
+@login_required
 def menage_orders():
     if current_user.role == 'seller' or current_user.role == 'admin':
         subquery = db.session.query(Product.id).filter(Product.seller_id == current_user.id).subquery()
@@ -66,6 +69,7 @@ def menage_orders():
 
 
 @orders_blueprint.route('/orders/menage_orders/edit_state/<int:idx>', methods=["POST"])
+@login_required
 def edit_state(idx):
     if current_user.role == 'seller' or current_user.role == 'admin':
         new_state = request.form.get('new_state')

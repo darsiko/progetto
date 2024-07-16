@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, render_template, redirect, url_for, flash, current_app, request
-from flask_login import current_user
-from sqlalchemy import func
+from flask_login import current_user, login_required
+from sqlalchemy import func, text
 from werkzeug.exceptions import Unauthorized
 from werkzeug.utils import secure_filename
 
@@ -31,6 +31,7 @@ def products():
 
 
 @products_blueprint.route('/<int:idx>/delete', methods=['POST'])
+@login_required
 def delete(idx):
     if current_user.role == 'admin' or current_user.role == 'seller':
         product = Product.query.get_or_404(idx)
@@ -42,6 +43,7 @@ def delete(idx):
 
 
 @products_blueprint.route('/<int:idx>/own_products', methods=['GET', 'POST'])
+@login_required
 def own_products(idx):
     if current_user.role == 'seller':
         prod = Product.query.filter_by(seller_id=idx)
@@ -51,6 +53,7 @@ def own_products(idx):
 
 
 @products_blueprint.route('/own_products/add', methods=['GET', 'POST'])
+@login_required
 def add_product():
     if current_user.role == 'seller' or current_user.role == 'admin':
         form = AddProductForm()
@@ -83,6 +86,7 @@ def add_product():
 
 
 @products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])
+@login_required
 def modify_product(idx):
     if current_user.role == 'seller' or current_user.role == 'admin':
         product = Product.query.filter_by(id=idx).first()
@@ -124,6 +128,18 @@ def search():
     max_price = request.args.get('max_price', type=float)
     category = request.args.get('category')
 
-    products = Product.query.filter(Product.name.ilike(f'%{name}%')).all()
+    sql_query = text('''
+        select prodotto
+        from (
+             select p.name as prodotto, c.name as categoria
+             from product p
+             join product_category pc on p.id = pc.product_id
+             join category c on c.id = pc.category_id
+             where p.name like :product_name and c.name = :category_name and p.price >= :min_price and p.price <= :max_price
+             )
+    ''')
 
-    return render_template('index.html', products=products, categories=Category.query.all())
+    params = {'product_name': f'%{name}%', 'category_name': category, 'min_price': min_price, 'max_price': max_price}
+    products = db.session.execute(sql_query, params)
+
+    return render_template('index.html', products=products, category=Category.query.all())

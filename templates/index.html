@@ -72,7 +72,7 @@
             <div class="col-md-8">
                 <form role="search" action="{{ url_for('products_blueprint.search') }}" method="GET">
                     <div class="d-flex justify-content-center mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
                             <div class="col-md-3">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                 <button class="btn btn-outline-success" type="submit">Search</button>

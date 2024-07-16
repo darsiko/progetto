@@ -33,7 +33,7 @@
                                     <div class="btn-group" role="group">
                                         <form action="{{ url_for('users_blueprint.modify', idx=user.id) }}" method="GET">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                            <button type="submit" class="btn btn-primary me-2">Modify</button>
+                                            <button type="submit" class="btn btn-primary me-2">Edit</button>
                                         </form>
                                         <form action="{{ url_for("users_blueprint.delete", idx=user.id) }}" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
