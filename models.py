@@ -3,7 +3,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin, LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime

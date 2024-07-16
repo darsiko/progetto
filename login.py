@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user
 from form import LoginForm
 from models import User
 

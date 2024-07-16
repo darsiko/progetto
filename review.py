@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user, login_required
 from form import ReviewForm
-from models import Review, Product, db, User
+from models import Review, Product, db
 from datetime import date
 
 review_blueprint = Blueprint('review_blueprint', __name__, template_folder='templates', static_folder='static')

@@ -1,9 +1,8 @@
 import datetime
-from flask import Blueprint, render_template, redirect, url_for, session, request
+from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import current_user, login_required
-from werkzeug.exceptions import Unauthorized
 
-from models import Order, Cart, CartItem, Product, db
+from models import Order, Product, db
 
 orders_blueprint = Blueprint('orders_blueprint', __name__, template_folder='templates', static_folder='static')
 

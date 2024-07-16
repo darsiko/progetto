@@ -1,8 +1,7 @@
 import os
-from flask import Blueprint, render_template, redirect, url_for, flash, current_app, request
+from flask import Blueprint, render_template, redirect, url_for, current_app, request
 from flask_login import current_user, login_required
-from sqlalchemy import func, text
-from werkzeug.exceptions import Unauthorized
+from sqlalchemy import func
 from werkzeug.utils import secure_filename
 
 from form import AddProductForm
@@ -128,18 +127,21 @@ def search():
     max_price = request.args.get('max_price', type=float)
     category = request.args.get('category')
 
-    sql_query = text('''
-        select prodotto
-        from (
-             select p.name as prodotto, c.name as categoria
-             from product p
-             join product_category pc on p.id = pc.product_id
-             join category c on c.id = pc.category_id
-             where p.name like :product_name and c.name = :category_name and p.price >= :min_price and p.price <= :max_price
-             )
-    ''')
+    query = db.session.query(Product)
+    if name:
+        query = query.filter(Product.name.ilike(f'%{name}%'))
+    if min_price is not None:
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None:
+        query = query.filter(Product.price <= max_price)
+    if category:
+        c = Category.query.filter_by(name=category).first()
+        if c:
+            pc = ProductCategory.query.filter_by(category_id=c.id).all()
+            product_ids = [prod.product_id for prod in pc]
+            if product_ids:
+                query = query.filter(Product.id.in_(product_ids))
 
-    params = {'product_name': f'%{name}%', 'category_name': category, 'min_price': min_price, 'max_price': max_price}
-    products = db.session.execute(sql_query, params)
+    products = query.all()
 
     return render_template('index.html', products=products, category=Category.query.all())
