@@ -12,6 +12,7 @@
                             <th scope="col">Total</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Resume</th>
+                            <th scope="col">Confirm</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,14 @@
                                             <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                                          </div>
                                      {% endif %}
+                                </td>
+                                <td>
+                                    {% if order.state == 'consegnato' %}
+                                        <form method="POST" action="{{ url_for('orders_blueprint.confirm_order', idx=order.id) }}">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-primary me-2">Confirm</button>
+                                        </form>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

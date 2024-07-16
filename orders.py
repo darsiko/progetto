@@ -15,6 +15,7 @@ def orders():
     for i in order:
         product = Product.query.filter_by(id=i.product_id).first()
         order_with_name.append({
+            'id': i.id,
             'name': product.name,
             'date': i.date,
             'state': i.state,
@@ -79,3 +80,13 @@ def edit_state(idx):
         return redirect(url_for('orders_blueprint.menage_orders'))
     else:
         return render_template("unauthorized.html"), 403
+
+
+@orders_blueprint.route('/orders/confirm_order/<int:idx>', methods=["POST"])
+@login_required
+def confirm_order(idx):
+    order = Order.query.filter_by(id=idx).first()
+    if order.state == 'consegnato':
+        db.session.delete(order)
+        db.session.commit()
+    return redirect(url_for('orders_blueprint.orders'))
