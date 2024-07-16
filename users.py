@@ -13,7 +13,7 @@ def users():
         user = User.query.all()
         return render_template("users.html", users=user)
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @users_blueprint.route('/users/modify/<int:idx>', methods=['GET', 'POST'])
@@ -30,7 +30,7 @@ def modify(idx):
             return redirect(url_for('users_blueprint.users'))
         return render_template('modify_users.html', form=form)
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @users_blueprint.route('/users/delete/<int:idx>', methods=['POST'])
@@ -41,7 +41,7 @@ def delete(idx):
         db.session.commit()
         return redirect(request.headers.get('Referer'))
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @users_blueprint.route('/private_area/edit', methods=['GET', 'POST'])

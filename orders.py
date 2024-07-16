@@ -62,7 +62,7 @@ def menage_orders():
             })
         return render_template('menage_orders.html', orders=order_with_name)
     else:
-        raise Unauthorized
+        return render_template("unauthorized.html"), 403
 
 
 @orders_blueprint.route('/orders/menage_orders/edit_state/<int:idx>', methods=["POST"])
@@ -75,4 +75,4 @@ def edit_state(idx):
             db.session.commit()
         return redirect(url_for('orders_blueprint.menage_orders'))
     else:
-        raise Unauthorized
+        return render_template("unauthorized.html"), 403

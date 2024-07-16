@@ -38,7 +38,7 @@ def delete(idx):
         db.session.commit()
         return redirect(request.headers.get('Referer'))
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @products_blueprint.route('/<int:idx>/own_products', methods=['GET', 'POST'])
@@ -47,7 +47,7 @@ def own_products(idx):
         prod = Product.query.filter_by(seller_id=idx)
         return render_template('own_products.html', products=prod)
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @products_blueprint.route('/own_products/add', methods=['GET', 'POST'])
@@ -79,7 +79,7 @@ def add_product():
             return redirect(url_for("products_blueprint.own_products", idx=current_user.id))
         return render_template("add_product.html", form=form)
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])
@@ -105,7 +105,7 @@ def modify_product(idx):
             return redirect(url_for('products_blueprint.own_products'))
         return render_template('modify_product.html', form=form)
     else:
-        raise Unauthorized()
+        return render_template("unauthorized.html"), 403
 
 
 @products_blueprint.route('/products/product/<int:idx>')
