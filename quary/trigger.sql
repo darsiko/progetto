@@ -63,12 +63,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER before_insert_or_update_user
+CREATE OR REPLACE TRIGGER before_insert_or_update_user
 BEFORE INSERT OR UPDATE
 ON "user"
 FOR EACH ROW
 EXECUTE FUNCTION check_unique_user();
-
 
 
 

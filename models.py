@@ -39,10 +39,10 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(80))
     role = db.Column(db.String(80))
 
-    products = db.relationship('Product', backref='seller', lazy=True)
-    orders = db.relationship('Order', backref='customer', lazy=True)
-    cart = db.relationship('Cart', uselist=False, backref='owner', lazy=True)
-    reviews = db.relationship('Review', backref='reviewer', lazy=True)
+    products = db.relationship('Product', backref='seller', lazy=True, cascade="all, delete-orphan")
+    orders = db.relationship('Order', backref='customer', lazy=True, cascade="all, delete-orphan")
+    cart = db.relationship('Cart', uselist=False, backref='owner', lazy=True, cascade="all, delete-orphan")
+    reviews = db.relationship('Review', backref='reviewer', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name, email, password, address, role):
         self.name = name
@@ -73,12 +73,12 @@ class Product(db.Model):
     description = db.Column(db.Text)
     amount = db.Column(db.Integer)
     price = db.Column(db.Float)
-    seller_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
-    orders = db.relationship('Order', backref='ordered_product', lazy=True)
-    cart_items = db.relationship('CartItem', backref='product', lazy=True)
-    reviews = db.relationship('Review', backref='product', lazy=True)
-    product_categories = db.relationship('ProductCategory', backref='product', lazy=True)
+    orders = db.relationship('Order', backref='ordered_product', lazy=True, cascade="all, delete-orphan")
+    cart_items = db.relationship('CartItem', backref='product', lazy=True, cascade="all, delete-orphan")
+    reviews = db.relationship('Review', backref='product', lazy=True, cascade="all, delete-orphan")
+    product_categories = db.relationship('ProductCategory', backref='product', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name, description, amount, price, seller_id):
         self.name = name
@@ -94,8 +94,8 @@ class Order(db.Model):
     date = db.Column(db.DateTime)
     state = db.Column(db.String(80))
     total = db.Column(db.Float)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete="CASCADE"), nullable=False)
     quantity = db.Column(db.Integer)
 
     def __init__(self, date, state, total, user_id, product_id, quantity):
@@ -111,9 +111,9 @@ class Cart(db.Model):
     __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key=True)
     last_modified = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
-    cart_items = db.relationship('CartItem', backref='cart', lazy=True)
+    cart_items = db.relationship('CartItem', backref='cart', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, last_modified, user_id):
         self.last_modified = last_modified
@@ -122,8 +122,8 @@ class Cart(db.Model):
 
 class CartItem(db.Model):
     __tablename__ = 'cart_item'
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False, primary_key=True)
-    cart_id = db.Column(db.Integer, db.ForeignKey('cart.id'), nullable=False, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete="CASCADE"), nullable=False, primary_key=True)
+    cart_id = db.Column(db.Integer, db.ForeignKey('cart.id', ondelete="CASCADE"), nullable=False, primary_key=True)
     quantity = db.Column(db.Integer)
 
     def __init__(self, product_id, cart_id, quantity):
@@ -138,7 +138,7 @@ class Category(db.Model):
     name = db.Column(db.String(80))
     description = db.Column(db.Text)
 
-    product_categories = db.relationship('ProductCategory', backref='category', lazy=True)
+    product_categories = db.relationship('ProductCategory', backref='category', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, name, description):
         self.name = name
@@ -147,8 +147,8 @@ class Category(db.Model):
 
 class ProductCategory(db.Model):
     __tablename__ = 'product_category'
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False, primary_key=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete="CASCADE"), nullable=False, primary_key=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id', ondelete="CASCADE"), nullable=False, primary_key=True)
 
     def __init__(self, product_id, category_id):
         self.product_id = product_id
@@ -161,8 +161,8 @@ class Review(db.Model):
     score = db.Column(db.Integer)
     text = db.Column(db.Text)
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id', ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"), nullable=False)
 
     def __init__(self, score, text, date, product_id, user_id):
         self.score = score
