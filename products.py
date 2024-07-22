@@ -127,21 +127,16 @@ def search():
     max_price = request.args.get('max_price', type=float)
     category = request.args.get('category')
 
-    query = db.session.query(Product)
-    if name:
-        query = query.filter(Product.name.ilike(f'%{name}%'))
-    if min_price is not None:
-        query = query.filter(Product.price >= min_price)
-    if max_price is not None:
-        query = query.filter(Product.price <= max_price)
-    if category:
-        c = Category.query.filter_by(name=category).first()
-        if c:
-            pc = ProductCategory.query.filter_by(category_id=c.id).all()
-            product_ids = [prod.product_id for prod in pc]
-            if product_ids:
-                query = query.filter(Product.id.in_(product_ids))
+    item = Product.query
 
-    products = query.all()
+    if name:
+        item = item.filter(Product.name.ilike(f'%{name}%'))
+
+    item = item.filter(Product.price.between(min_price, max_price))
+
+    if category:
+        item = item.join(ProductCategory).join(Category).filter(Category.name == category)
+
+    products = item.all()
 
     return render_template('index.html', products=products, category=Category.query.all())

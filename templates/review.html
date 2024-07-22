@@ -7,9 +7,11 @@
         </div>
         <div class="col text-end">
             <form action="{{ url_for('review_blueprint.add_review', idx=product.id) }}" method="GET">
+                {% if current_user.is_authenticated %}
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-plus me-2"></i>Add Review
                 </button>
+                {% endif %}
             </form>
         </div>
     </div>
