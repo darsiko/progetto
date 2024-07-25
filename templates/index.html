@@ -84,7 +84,7 @@
                                 <div class="d-flex flex-column card-body">
                                     <div class="col-md-12">
                                         <p>- From Price:</p>
-                                        <input class="col-md-12" type="range" value="24" min="1" max="10000" oninput="this.nextElementSibling.value = this.value" name="min_price">
+                                        <input class="col-md-12" type="range" value="1" min="1" max="10000" oninput="this.nextElementSibling.value = this.value" name="min_price">
                                         <output>1</output>€
                                     </div>
                                     <div class="col-md-12">
@@ -149,11 +149,11 @@
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                 <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
                                             </form>
-                                        {% else %}
+                                        {#{% else %}
                                             <form action="{{ url_for('login_blueprint.login') }}" method="get" class="d-inline">
                                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                                 <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
-                                            </form>
+                                            </form>#}
                                         {% endif %}
                                     </div>
                                 </div>

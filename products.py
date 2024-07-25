@@ -10,26 +10,7 @@ from models import Product, db, Review, ProductCategory, Category
 products_blueprint = Blueprint('products_blueprint', __name__, template_folder="templates", static_folder="static")
 
 
-@products_blueprint.route("/products")
-def products():
-    items = Product.query.all()
-    item_with_score = []
-    for i in items:
-        avg = db.session.query(func.avg(Review.score)).filter(Review.product_id == i.id).scalar()
-        if avg is not None:
-            avg = round(avg, 1)
-        item_with_score.append({
-            'id': i.id,
-            'name': i.name,
-            'price': i.price,
-            'description': i.description,
-            'amount': i.amount,
-            'avg': avg
-        })
-    return render_template("products.html", products=item_with_score)
-
-
-@products_blueprint.route('/<int:idx>/delete', methods=['POST'])
+@products_blueprint.route('/delete/<int:idx>', methods=['POST'])
 @login_required
 def delete(idx):
     if current_user.role == 'admin' or current_user.role == 'seller':
@@ -41,7 +22,7 @@ def delete(idx):
         return render_template("unauthorized.html"), 403
 
 
-@products_blueprint.route('/<int:idx>/own_products', methods=['GET', 'POST'])
+@products_blueprint.route('/own_products/<int:idx>', methods=['GET', 'POST'])
 @login_required
 def own_products(idx):
     if current_user.role == 'seller':
@@ -84,7 +65,7 @@ def add_product():
         return render_template("unauthorized.html"), 403
 
 
-@products_blueprint.route('/<int:idx>/own_products/modify', methods=['POST'])
+@products_blueprint.route('/own_products/modify/<int:idx>', methods=['POST'])
 @login_required
 def modify_product(idx):
     if current_user.role == 'seller' or current_user.role == 'admin':
@@ -105,13 +86,13 @@ def modify_product(idx):
                 file.save(filepath)
 
             db.session.commit()
-            return redirect(url_for('products_blueprint.own_products'))
+            return redirect(url_for('products_blueprint.own_products', idx=current_user.id))
         return render_template('modify_product.html', form=form)
     else:
         return render_template("unauthorized.html"), 403
 
 
-@products_blueprint.route('/products/product/<int:idx>')
+@products_blueprint.route('/product/<int:idx>')
 def product(idx):
     item = Product.query.filter_by(id=idx).first()
     avg = db.session.query(func.avg(Review.score)).filter(Review.product_id == idx).scalar()
@@ -126,6 +107,8 @@ def search():
     min_price = request.args.get('min_price', type=float)
     max_price = request.args.get('max_price', type=float)
     category = request.args.get('category')
+
+    print(name, min_price, max_price, category)
 
     item = Product.query
 
