@@ -1,16 +1,24 @@
 {% extends 'index.html' %}
 {% block content %}
-    <div class="container">
-        <ul class="list-group">
-            <li class="list-group-item">{{ current_user.name }}</li>
-            <li class="list-group-item">{{ current_user.email }}</li>
-            <li class="list-group-item">{{ current_user.address }}</li>
-            <li class="list-group-item">{{ current_user.role }}</li>
-        </ul>
-        <form method="GET" class="mt-5" action="{{ url_for('users_blueprint.edit') }}">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button type="submit" class="btn btn-primary">Edit profile</button>
-        </form>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">User Profile</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Name:</strong> {{ current_user.name }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ current_user.email }}</li>
+                    <li class="list-group-item"><strong>Address:</strong> {{ current_user.address }}</li>
+                    <li class="list-group-item"><strong>Role:</strong> {{ current_user.role }}</li>
+                </ul>
+            </div>
+            <div class="card-footer text-right">
+                <form method="GET" action="{{ url_for('users_blueprint.edit') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-primary">Edit Profile</button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

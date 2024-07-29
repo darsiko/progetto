@@ -1,53 +1,62 @@
 {% extends "index.html" %}
 {% block content %}
-    <div class="container">
-        <div class="row mt-5 justify-content-center">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
             <div class="col-md-10">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in cart %}
-                            <tr>
-                                <td>{{ product.name }}</td>
-                                <td>{{ product.description }}</td>
-                                <td>
-                                    <form action="{{ url_for('cart_blueprint.update_quantity', idp=product.product_id, idc=product.cart_id) }}" method="POST" class="d-flex align-items-center">
-                                        <input type="number" name="quantity" value="{{ product.quantity }}" min="1" class="form-control" style="width: 80px;">
-                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                        <button type="submit" class="btn btn-primary ml-3">Update</button>
-                                    </form>
-                                </td>
-                                <td>{{ product.price }}</td>
-                                <td>
-                                    <form action="{{ url_for('cart_blueprint.remove', idp=product.product_id, idc=product.cart_id) }}" method="POST">
-                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                        <button type="submit" class="btn btn-danger">Remove</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <form method="POST" action="{{ url_for('orders_blueprint.add_order') }}">
-                    {% for product in cart %}
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <input type="hidden" name="name" value="{{ product.name }}">
-                        <input type="hidden" name="quantity" value="{{ product.quantity }}">
-                        <input type="hidden" name="price" value="{{ product.price }}">
-                    {% endfor %}
-                    {% if cart %}
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-primary">Buy</button>
-                    {% endif %}
-                </form>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Shopping Cart</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in cart %}
+                                    <tr>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.description }}</td>
+                                        <td>
+                                            <form action="{{ url_for('cart_blueprint.update_quantity', idp=product.product_id, idc=product.cart_id) }}" method="POST" class="d-flex align-items-center">
+                                                <input type="number" name="quantity" value="{{ product.quantity }}" min="1" class="form-control" style="width: 80px;">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-primary btn-sm ml-2">Update</button>
+                                            </form>
+                                        </td>
+                                        <td>{{ product.price }}</td>
+                                        <td>
+                                            <form action="{{ url_for('cart_blueprint.remove', idp=product.product_id, idc=product.cart_id) }}" method="POST">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-right">
+                        <form method="POST" action="{{ url_for('orders_blueprint.add_order') }}">
+                            {% for product in cart %}
+                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                <input type="hidden" name="name" value="{{ product.name }}">
+                                <input type="hidden" name="quantity" value="{{ product.quantity }}">
+                                <input type="hidden" name="price" value="{{ product.price }}">
+                            {% endfor %}
+                            {% if cart %}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-primary">Buy</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
