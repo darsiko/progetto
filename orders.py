@@ -1,5 +1,5 @@
 import datetime
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
 
 from models import Order, Product, db, Cart, CartItem
@@ -45,9 +45,13 @@ def add_order():
         db.session.add(order)
         cart_product = CartItem.query.filter_by(cart_id=current_cart.id, product_id=item["product_id"]).first()
         db.session.delete(cart_product)
+        prod = Product.query.filter_by(id=item["product_id"]).first()
+        if item["amount"] <= prod.amount:
+            prod.amount -= item["amount"]
+        else:
+            flash('Error: not enough products', 'danger')
+            return redirect(url_for('cart_blueprint.cart'))
         db.session.commit()
-
-
 
     return redirect(url_for('orders_blueprint.orders'))
 
